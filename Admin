@@ -1,0 +1,88 @@
+def main():
+    print("Welcome to the ATM.")
+    admin()
+
+def admin():
+    chances = 3
+    balance = 0.00
+    cards = 0
+    user = str(input("Menu options to enter:\n" +
+            "1: Add a new ATM card\n" +
+            "2: View ATM Machine Status\n" +
+            "3: Update ATM Card.\n"))
+    if user == "1":
+        print("You have entered 1 to Add a new ATM Card.")
+        cards = cards + 1
+        for i in range(cards):
+            accNum[i] = int(input("Enter new Account Number: "))
+            PIN[i] = int(input("Enter new PIN: "))
+            accName[i] = str(input("Enter new Account Name: "))
+            dateMon[i] = int(input("Enter date of Month: "))
+            dateDay[i] = int(input("Enter date of Day: "))
+            dateYear[i] = int(input("Enter date of Year: "))
+            fullDate[i] = dateMon[i] + "/" + dateDay[i] + "/" + dateYear[i]
+            expDate[i] = int(dateMon[i] + "/" + dateDay[i] + "/" + (dateYear[i]+10))
+            addressNums[i] = int(input("Enter the number part of your address: "))
+            addressStreet[i] = str(input("Enter street name of address: "))
+            fullAddress[i] = addressNums[i] + " " + addressStreet[i]
+            balance[i] = int(input("Enter balance on this card: "))
+            phoneNum[i] = int(input("Enter phone number for card (NO dashes): "))
+            cardStatus[i] = print("???")
+
+
+            
+    elif user == "2":
+        print("You have entered 2 to view ATM Machine Status.")
+        user2 = int(input("Menu options to enter:\n" +
+                          "1: View ATM Address\n" +
+                          "2: View ATM Machine Status\n" +
+                          "3: View Last Refill Date\n" +
+                          "4: View Next Refill Date\n" +
+                          "5: View Minimum Balance Enquiry\n" +
+                          "6: View Current Balance\n"))
+        if user2 == 1:
+            print("ATM Address is 408 CCT Columbus State University")
+        elif user2 == 2:
+            print("ATM Machine Status is... Excellent!")
+        elif user2 == 3:
+            print("Last Refill Date: ")
+        elif user2 == 4:
+            print("Next Refill Date: ")
+        elif user2 == 5:
+            print("Minimum Balance Enquiry is $200")
+        elif user2 == 6:
+            if cards == 0:
+                print("You need to add a card!")
+            #break
+            else:
+                chkCard = int(input("Which card would you like to check balance?"))
+                if chkCard <= cards:
+                    while chances < 3:
+                        chkPIN = int(input("Enter the PIN for this card: "))
+                        if chkPIN == PIN[i]:
+                            print("Your current balance is: " + balance[i])
+                            break
+                        else:
+                            chances = chances + 1
+                else:
+                    print("You do not have that many cards.")
+                    #break
+        else:
+            print("ATM Machine Error.")
+
+
+
+    elif user == "3":
+        if cards == 0:
+            print("You need to add a card!")
+        else:
+            print("")
+    else:
+        print("ATM Machine Error.\n")
+        #break
+    
+
+
+
+
+main()
