@@ -1,37 +1,52 @@
+
 def main():
     print("Welcome to the ATM.")
     admin()
 
 def admin():
+    accNum = []
+    PIN = []
+    accName = []
+    dateMon = []
+    dateDay = []
+    dateYear = []
+    fullDate = []
+    expDate = []
+    addressNums = []
+    addressStreet = []
+    fullAddress = []
+    phoneNum = []
+    cardStatus = []
+
     chances = 3
     balance = 0.00
     cards = 0
-    user = str(input("Menu options to enter:\n" +
+    user = int(input("Menu options to enter:\n" +
             "1: Add a new ATM card\n" +
             "2: View ATM Machine Status\n" +
             "3: Update ATM Card.\n"))
-    if user == "1":
+    if user == 1:
         print("You have entered 1 to Add a new ATM Card.")
         cards = cards + 1
         for i in range(cards):
-            accNum[i] = int(input("Enter new Account Number: "))
-            PIN[i] = int(input("Enter new PIN: "))
-            accName[i] = str(input("Enter new Account Name: "))
-            dateMon[i] = int(input("Enter date of Month: "))
-            dateDay[i] = int(input("Enter date of Day: "))
-            dateYear[i] = int(input("Enter date of Year: "))
-            fullDate[i] = dateMon[i] + "/" + dateDay[i] + "/" + dateYear[i]
-            expDate[i] = int(dateMon[i] + "/" + dateDay[i] + "/" + (dateYear[i]+10))
-            addressNums[i] = int(input("Enter the number part of your address: "))
-            addressStreet[i] = str(input("Enter street name of address: "))
-            fullAddress[i] = addressNums[i] + " " + addressStreet[i]
-            balance[i] = int(input("Enter balance on this card: "))
-            phoneNum[i] = int(input("Enter phone number for card (NO dashes): "))
-            cardStatus[i] = print("???")
+            accNum.append(int(input("Enter new Account Number: ")))
+            PIN.append(int(input("Enter new PIN: ")))
+            accName.append(input("Enter new Account Name: "))
+            dateMon.append(int(input("Enter date of Month: ")))
+            dateDay.append(int(input("Enter date of Day: ")))
+            dateYear.append(int(input("Enter date of Year: ")))
+            fullDate.append(str(dateMon[i]) + "/" + str(dateDay[i]) + "/" + str(dateYear[i]))
+            expDate.append(str(dateMon[i]) + "/" + str(dateDay[i]) + "/" + str((dateYear[i]+10)))
+            addressNums.append(int(input("Enter the number part of your address: ")))
+            addressStreet.append(input("Enter street name of address: "))
+            fullAddress.append(str(addressNums[i]) + " " + addressStreet[i])
+            balance = int(input("Enter balance on this card: "))
+            phoneNum.append(int(input("Enter phone number for card (NO dashes): ")))
+            cardStatus.append("???")
 
 
-            
-    elif user == "2":
+
+    elif user == 2:
         print("You have entered 2 to view ATM Machine Status.")
         user2 = int(input("Menu options to enter:\n" +
                           "1: View ATM Address\n" +
@@ -72,7 +87,7 @@ def admin():
 
 
 
-    elif user == "3":
+    elif user == 3:
         if cards == 0:
             print("You need to add a card!")
         else:
@@ -80,9 +95,9 @@ def admin():
     else:
         print("ATM Machine Error.\n")
         #break
-    
 
 
 
 
-main()
+if __name__ == "__main__":
+    main()
