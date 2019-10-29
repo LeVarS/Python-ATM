@@ -1,3 +1,4 @@
+from django.core.validators import MinLengthValidator
 from django.db import models
 from django.urls import reverse # Used to generate URLs by reversing the URL patterns
 
@@ -8,9 +9,10 @@ class Account(models.Model):
     """ Primary Key for Account model """
     account_number = models.CharField(
         #verbose_name='Account',
-        max_length=10,
-        #help_text='Enter Account Number',
-        primary_key=True)
+        primary_key=True,
+        validators=[MinLengthValidator(12)],
+        max_length=12,
+        help_text='Enter Account Number')
 
     # First and Second Name for Account
     first_name = models.CharField(
@@ -26,6 +28,7 @@ class Account(models.Model):
     # Phone Number for Account
     phone_number = models.CharField(
         #verbose_name='Phone',
+        validators=[MinLengthValidator(10)],
         max_length=10,
         help_text='Enter phone number for Account')
 
@@ -51,6 +54,7 @@ class Card(models.Model):
     card_number = models.CharField(
         #verbose_name='Card',
         primary_key=True,
+        validators=[MinLengthValidator(16)],
         max_length=16,
         help_text='Card number')
 
@@ -61,6 +65,7 @@ class Card(models.Model):
         help_text='Account that this Card is linked to')
 
     pin = models.CharField(
+        validators=[MinLengthValidator(4)],
         max_length=4,
         help_text='Enter PIN for Card')
 
@@ -76,6 +81,7 @@ class Card(models.Model):
 
     phone_number = models.CharField(
         #verbose_name='Phone',
+        validators=[MinLengthValidator(10)],
         max_length=10,
         help_text='Enter phone number for Account')
 
@@ -111,6 +117,7 @@ class ATMachine(models.Model):
     """ Primary Key """
     machine_id = models.CharField(
         primary_key=True,
+        validators=[MinLengthValidator(16)],
         max_length=16,
         help_text="Identification Number for ATM")
 
@@ -139,6 +146,7 @@ class Transaction(models.Model):
     """ Primary Key """
     transaction_id = models.CharField(
         primary_key=True,
+        validators=[MinLengthValidator(10)],
         max_length=10,
         help_text='Identification Number for Transaction')
 
