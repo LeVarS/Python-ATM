@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from catalog.models import Account, Card, ATMachine, ATMachineRefill, Transaction
+from django.views import generic
 
 # Create your views here.
 
@@ -24,3 +25,11 @@ def index(request):
 
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
+
+
+class AccountListView(generic.ListView):
+    model = Account
+    paginate_by = 25
+
+class AccountDetailView(generic.DetailView):
+    model = Account
