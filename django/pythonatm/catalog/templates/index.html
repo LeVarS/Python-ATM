@@ -1,0 +1,14 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Bank ANL Home</h1>
+  <p>Welcome to Bank ANL, a website developed by <em>Group ANL</em>!</p>
+  <h2>Dynamic content</h2>
+  <p>The Bank has the following record counts:</p>
+  <ul>
+    <li><strong>Accounts:</strong> {{ num_accounts }}</li>
+    <li><strong>Cards:</strong> {{ num_cards }}</li>
+    <li><strong>ATM's:</strong> {{ num_atms }}</li>
+    <li><strong>Transactions:</strong> {{ num_transactions }}</li>
+  </ul>
+{% endblock %}
