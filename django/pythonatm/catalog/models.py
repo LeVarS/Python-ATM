@@ -1,4 +1,4 @@
-from django.core.validators import MinLengthValidator
+from django.core.validators import MinLengthValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse # Used to generate URLs by reversing the URL patterns
 
@@ -17,11 +17,13 @@ class Account(models.Model):
     # First and Second Name for Account
     first_name = models.CharField(
         #verbose_name='First',
+        validators=[MinLengthValidator(1)],
         max_length=30,
         help_text='Enter first name for Account')
 
     last_name = models.CharField(
         #verbose_name='Last',
+        validators=[MinLengthValidator(1)],
         max_length=30,
         help_text='Enter last name for Account')
 
@@ -39,7 +41,7 @@ class Account(models.Model):
 
     def __str__(self):
         """String for representing the Account object."""
-        return f'{self.account_number}, {self.first_name} {self.last_name}'
+        return f'Account: {self.account_number}, {self.first_name} {self.last_name}'
 
     def get_absolute_url(self):
         """Returns the url to access a detail record for this Account."""
@@ -108,7 +110,7 @@ class Card(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return f'{self.card_number} ({self.account})'
+        return f'Card: {self.card_number} ({self.account})'
 
 
 
@@ -136,7 +138,36 @@ class ATMachine(models.Model):
         blank=True)
 
     def __str__(self):
-        return f''
+        return f'ATM: {self.machine_id}'
+
+
+
+""" ATMachine Refill """
+class ATMachineRefill(models.Model):
+
+    """ Primary Key """
+    refill_id = models.CharField(
+        primary_key = True,
+        validators=[MinLengthValidator(6)],
+        max_length=6,
+        help_text='Refill Identification Number for Transaction')
+
+    atm_machine=models.ForeignKey(
+        ATMachine,
+        on_delete=models.SET_NULL,
+        null=True,
+        help_text='ATM refill was done on')
+
+    refill_amount=models.IntegerField(
+        validators=[MinValueValidator(0)],
+        help_text='Refill amount')
+
+    refill_date=models.DateField(
+        null=True,
+        blank=True)
+
+    def __str__(self):
+        return f'ATM Refill: {self.refill_id} ${self.refill_amount}'
 
 
 
@@ -198,4 +229,4 @@ class Transaction(models.Model):
         help_text='Response Code for Tranaction')
 
     def __str__(self):
-        return f''
+        return f'{self.type} Transaction: {self.transaction_id}, {self.atm_machine}, {self.card}'
