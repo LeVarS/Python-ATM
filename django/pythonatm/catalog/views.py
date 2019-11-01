@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from catalog.models import Account, Card, ATMachine, ATMachineRefill, Transaction
 from django.views import generic
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
@@ -33,3 +34,12 @@ class AccountListView(generic.ListView):
 
 class AccountDetailView(generic.DetailView):
     model = Account
+
+class AccountByUserListView(LoginRequiredMixin,generic.ListView):
+    """ Generic class-based view listing a users bank account(s). """
+    model = Account
+    template_name ='catalog/account_list_user.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Account.objects.filter(bank_user=self.request.user).order_by('account_number')

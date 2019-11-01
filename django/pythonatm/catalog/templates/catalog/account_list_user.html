@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Accounts</h1>
+
+    {% if account_list %}
+    <ul>
+
+      {% for account in account_list %}
+      <li class="{% if account.balance < 0 %}text-danger{% endif %}">
+        <a href="{% url 'account-detail' account.pk %}">{{account.account_number}}: {{ account.first_name }} {{ account.last_name }}</a> (${{ account.balance }})
+      </li>
+      {% endfor %}
+    </ul>
+
+    {% else %}
+      <p>You currently have no opened accounts with Bank ANL.</p>
+    {% endif %}
+{% endblock %}

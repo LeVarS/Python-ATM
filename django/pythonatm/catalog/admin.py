@@ -5,8 +5,8 @@ from catalog.models import Account, Card, ATMachine, Transaction, ATMachineRefil
 
 
 class AccountAdmin(admin.ModelAdmin):
-    list_display = ('last_name', 'first_name', 'account_number', 'balance')
-    fields = ['first_name', 'last_name', 'phone_number', ('account_number', 'balance')]
+    list_display = ('last_name', 'first_name', 'account_number', 'balance') # Inserting "('bank_user')" causes a TypeError
+    fields = ['first_name', 'last_name', 'phone_number', ('account_number', 'balance'), 'bank_user']
 admin.site.register(Account, AccountAdmin)    # Same thing as "admin.site.register(Account)"
 
 class CardAdmin(admin.ModelAdmin):
