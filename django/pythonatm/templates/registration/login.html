@@ -11,13 +11,18 @@
     <p>Your account doesn't have access to this page. To proceed,
     please login with an account that has access.</p>
   {% else %}
-    <p>Please login to see this page.</p>
+
   {% endif %}
 {% endif %}
 
+<p>Sign in below or <a href="{% url 'register' %}">register</a> here.</p>
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
-<table>
+<p>{{ form.username.label_tag }}</p>
+<p>{{ form.username }}</p>
+<p>{{ form.password.label_tag }}</p>
+<p>{{ form.password }}</p>
+<!-- <table>
 
 <tr>
   <td>{{ form.username.label_tag }}</td>
@@ -28,13 +33,15 @@
   <td>{{ form.password.label_tag }}</td>
   <td>{{ form.password }}</td>
 </tr>
-</table>
-
-<input type="submit" value="login" />
+</table> -->
+<br>
+<input class="btn" type="submit" value="login" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
 {# Assumes you setup the password_reset view in your URLconf #}
-<p><a href="{% url 'password_reset' %}">Forgot password?</a></p>
+<p>
+  <a href="{% url 'password_reset' %}">Forgot password?</a>
+</p>
 
 {% endblock %}

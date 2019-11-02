@@ -1,7 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import Group
 from catalog.models import Account, Card, ATMachine, ATMachineRefill, Transaction
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+from catalog.forms import CustomUserCreationForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
 
 # Create your views here.
 
@@ -27,6 +31,28 @@ def index(request):
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
 
+def register(request):
+    if request.method == "POST":
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            group = Group.objects.get(name='Bank Members')
+            user.groups.add(group)
+            user = form.save()
+            login(request, user)
+
+            return redirect("index")
+        else:
+            for msg in form.errors:
+                print(form.errors[msg])
+
+    form = CustomUserCreationForm
+    context = {
+         'form' : form,
+    }
+
+    # ../templates/registration/register.html
+    return render(request, "register.html", context=context)
 
 class AccountListView(generic.ListView):
     model = Account

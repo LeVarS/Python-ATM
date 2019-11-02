@@ -10,3 +10,7 @@ urlpatterns = [
 urlpatterns += [
     path('myaccounts/', views.AccountByUserListView.as_view(), name='my-accounts'),
 ]
+
+urlpatterns += [
+    path('register/', views.register, name='register'),
+]
