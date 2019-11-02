@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #'catalog.apps.CatalogConfig',
     'catalog',
 ]
 
@@ -126,3 +127,5 @@ STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+#AUTH_USER_MODEL = 'catalog.CustomUser'

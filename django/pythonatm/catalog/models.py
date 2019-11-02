@@ -1,7 +1,28 @@
 from django.core.validators import MinLengthValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse # Used to generate URLs by reversing the URL patterns
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User #, AbstractUser
+
+# class CustomUser(AbstractUser):
+#     username = models.CharField(
+#         max_length=40,
+#         validators=[MinLengthValidator(1)],
+#         unique=True)
+#
+#     #USERNAME_FIELD = 'identifier'
+#
+#     first_name = models.CharField(
+#         max_length=30,
+#         validators=[MinLengthValidator(1)])
+#
+#     last_name = models.CharField(
+#         max_length=30,
+#         validators=[MinLengthValidator(1)])
+#
+#     def __str__(self):
+#         return f''
+
+
 
 # Create your models here.
 """ Account """

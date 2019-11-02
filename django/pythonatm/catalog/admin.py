@@ -1,5 +1,9 @@
 from django.contrib import admin
-from catalog.models import Account, Card, ATMachine, Transaction, ATMachineRefill
+from django.contrib.auth import get_user_model
+from django.contrib.auth.admin import UserAdmin
+
+from catalog.models import Account, Card, ATMachine, Transaction, ATMachineRefill #, CustomUser
+# from catalog.forms import CustomUserCreationForm, CustomUserChangeForm
 
 # Register your models here.
 
@@ -32,3 +36,10 @@ class ATMachineRefillAdmin(admin.ModelAdmin):
     list_filter = ('atm_machine', 'refill_date')
     fields = [('refill_id', 'refill_amount', 'refill_date'), 'atm_machine']
 admin.site.register(ATMachineRefill, ATMachineRefillAdmin)
+
+# class CustomUserAdmin(UserAdmin):
+#     add_form = CustomUserCreationForm
+#     form = CustomUserChangeForm
+#     model = CustomUser
+#     list_display = ['email', 'username', 'first_name', 'last_name']
+# admin.site.register(CustomUser, CustomUserAdmin)
