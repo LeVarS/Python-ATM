@@ -36,8 +36,11 @@ The above message contains the link (**http://127.0.0.1:8000**) to the homepage 
 ### 4. Useful links
 Below are hyperlinks to different parts of the website that will only work if it is currently running.
 
-[Accounts][Accounts page link]&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;This page has all the active accounts for every user. (Will be removed when project is done)  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\*(Will be removed when project is done)*
+[Accounts][accounts page link]&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Page that has all the active accounts for every user. \*(Will be removed when project is done)\*
+
+[Admin][admin login page]&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Log in page for the Admin(s).
+
+[Personal User Accounts][user accounts page]&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Page that will only show the logged-in users account. This page is currently only accessible by this link.
 
 
 
@@ -46,4 +49,6 @@ Below are hyperlinks to different parts of the website that will only work if it
 
 
 [Python and Django install link]: https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/development_environment
-[Accounts page link]: http://127.0.0.1:8000/catalog/accounts/
+[accounts page link]: http://127.0.0.1:8000/catalog/accounts/
+[admin login page]: http://127.0.0.1.8000/admin
+[user accounts page]: http://127.0.0.1.8000/catalog/myaccounts
