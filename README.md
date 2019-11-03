@@ -41,7 +41,10 @@ Below are hyperlinks to different parts of the website that will only work if it
 
 [Admin][admin login page]&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Log in page for the Admin(s).
 
-[Personal User Accounts][user accounts page]&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Page that will only show the logged-in users account(s). This page is currently only accessible by this link.
+[Personal User Accounts][user accounts page]&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Page that will only show the logged-in users account(s). This page is only accessible if the user is logged in.
+
+[Personal User Cards][user accounts page]&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Page that will only show the logged-in users card(s). This page is only accessible if the user is logged in.
+
 
 
 
@@ -53,3 +56,4 @@ Below are hyperlinks to different parts of the website that will only work if it
 [accounts page link]: http://127.0.0.1:8000/catalog/accounts/
 [admin login page]: http://127.0.0.1.8000/admin
 [user accounts page]: http://127.0.0.1.8000/catalog/myaccounts
+[user cards page]: 127.0.0.1.8000/catalog/mycards

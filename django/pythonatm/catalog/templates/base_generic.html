@@ -24,8 +24,8 @@
           {% if user.is_authenticated %}
             <li>User: {{ user.get_username }}</li>
             <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
-            <li><a href="{% url 'my-accounts'%}">My Accounts</a></li>
-            <li><a href="{% url 'my-cards'%}">My Cards</a></li>
+            <li><a href="{% url 'my-accounts' %}">My Accounts</a></li>
+            <li><a href="{% url 'my-cards' %}">My Cards</a></li>
           {% else %}
             <li><a href="{% url 'login'%}?next=../../">Sign in</a> or
                 <a href="{% url 'register'%}?next=../../">register</a></li>
