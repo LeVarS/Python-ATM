@@ -1,5 +1,6 @@
 # Python-ATM
-ATM Software is an academic project developed in Python scripting language which resembles the existing ATM (Automatic Teller Machine) software.
+ATM Software is an academic project developed in Python scripting language which resembles the existing ATM (Automatic Teller Machine) software.  
+This project is built using the Django framework
 
 ### 1. How to Run the website
 If Python and Django is already installed on your machine skip to step 2
