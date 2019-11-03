@@ -8,24 +8,31 @@ class CustomUserCreationForm(UserCreationForm):
         model = User
         fields = ('first_name', 'last_name', 'email', 'username')
 
-    # def save(self, commit=True):
-    #     user = User.objects.create_user(
-    #         self.cleaned_data['username'],
-    #         email=self.cleaned_data['email'],
-    #         password=self.cleaned_data['password'],
-    #         first_name=self.cleaned_data['first_name'],
-    #         last_name=self.cleaned_data['last_name']
-    #     )
-    #     return user
+class AccountCreationForm(forms.Form):
+    first_name = forms.CharField()
+    last_name = forms.CharField()
+    phone_number = forms.CharField()
+    balance = forms.IntegerField()
 
+    # user should not see these and they should be generated for the user
+    """
+    account_number
+    user
+    """
 
-    # def save(self, commit=True):
-    #     user = super(UserCreationForm, self).save(commit=False)
-    #     user.set_password(self.cleaned_data["password1"])
-    #     if commit:
-    #         user.save()
-    #     return user
+class CardCreationForm(forms.Form):
+    first_name = forms.CharField()
+    last_name = forms.CharField()
+    phone_number = forms.CharField()
+    pin = forms.CharField()
 
+    # user should not see these and they should be generated for the user
+    """
+    issue_date
+    expiration_date
+    account
+    card_number
+    """
 # class CustomUserChangeForm(UserChangeForm):
 #
 #     class Meta:

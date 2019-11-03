@@ -3,26 +3,6 @@ from django.db import models
 from django.urls import reverse # Used to generate URLs by reversing the URL patterns
 from django.contrib.auth.models import User #, AbstractUser
 
-# class CustomUser(AbstractUser):
-#     username = models.CharField(
-#         max_length=40,
-#         validators=[MinLengthValidator(1)],
-#         unique=True)
-#
-#     #USERNAME_FIELD = 'identifier'
-#
-#     first_name = models.CharField(
-#         max_length=30,
-#         validators=[MinLengthValidator(1)])
-#
-#     last_name = models.CharField(
-#         max_length=30,
-#         validators=[MinLengthValidator(1)])
-#
-#     def __str__(self):
-#         return f''
-
-
 
 # Create your models here.
 """ Account """
@@ -89,6 +69,13 @@ class Card(models.Model):
         max_length=16,
         help_text='Card number')
 
+    """ Links account to a specific user """
+    bank_user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True)
+
     account = models.ForeignKey(
         Account,
         on_delete=models.SET_NULL,
@@ -140,6 +127,10 @@ class Card(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f'Card: {self.card_number} ({self.account})'
+
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this Account."""
+        return reverse('card-detail', args=[str(self.card_number)])
 
 
 

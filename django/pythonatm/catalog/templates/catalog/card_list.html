@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Card List</h1>
+  {% if card_list %}
+  <ul>
+    {% for card in card_list %}
+      <li>
+        <a href="{{ card.get_absolute_url }}">{{ card.card_number }}</a> ({{card.last_name}}, {{card.first_name}})
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no cards at this bank.</p>
+  {% endif %}
+{% endblock %}

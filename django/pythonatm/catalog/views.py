@@ -3,7 +3,7 @@ from django.contrib.auth.models import Group
 from catalog.models import Account, Card, ATMachine, ATMachineRefill, Transaction
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from catalog.forms import CustomUserCreationForm
+from catalog.forms import CustomUserCreationForm, AccountCreationForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 
@@ -54,6 +54,12 @@ def register(request):
     # ../templates/registration/register.html
     return render(request, "register.html", context=context)
 
+# def RegisterAccount(request):
+#     pass
+#
+# def AddCard(request):
+#     pass  
+
 class AccountListView(generic.ListView):
     model = Account
     paginate_by = 25
@@ -61,7 +67,7 @@ class AccountListView(generic.ListView):
 class AccountDetailView(generic.DetailView):
     model = Account
 
-class AccountByUserListView(LoginRequiredMixin,generic.ListView):
+class AccountByUserListView(LoginRequiredMixin, generic.ListView):
     """ Generic class-based view listing a users bank account(s). """
     model = Account
     template_name ='catalog/account_list_user.html'
@@ -69,3 +75,19 @@ class AccountByUserListView(LoginRequiredMixin,generic.ListView):
 
     def get_queryset(self):
         return Account.objects.filter(bank_user=self.request.user).order_by('account_number')
+
+class CardListView(generic.ListView):
+    model = Card
+    paginate_by = 25
+
+class CardDetailView(generic.DetailView):
+    model = Card
+
+class CardByUserListView(LoginRequiredMixin, generic.ListView):
+    """ Generic class-based view listing a users card(s). """
+    model = Card
+    template_name ='catalog/card_list_user.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Card.objects.filter(bank_user=self.request.user).order_by('card_number')

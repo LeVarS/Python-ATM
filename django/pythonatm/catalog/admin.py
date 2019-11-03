@@ -16,7 +16,7 @@ admin.site.register(Account, AccountAdmin)    # Same thing as "admin.site.regist
 class CardAdmin(admin.ModelAdmin):
     list_display = ('card_number', 'account', 'issue_date', 'expiration_date', 'status')
     list_filter = ('issue_date', 'expiration_date', 'status')
-    fields = ['first_name', 'last_name', 'phone_number', 'account', ('card_number', 'pin'), ('issue_date', 'expiration_date'), 'status']
+    fields = ['first_name', 'last_name', 'phone_number', 'account', ('card_number', 'pin'), ('issue_date', 'expiration_date'), 'status', 'bank_user']
 admin.site.register(Card, CardAdmin)
 
 class ATMachineAdmin(admin.ModelAdmin):

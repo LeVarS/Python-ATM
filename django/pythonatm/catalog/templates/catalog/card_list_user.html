@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Cards</h1>
+    <p><a href="{% url 'login' %}">Click here</a> to add a card to your account(s).</p>
+
+    {% if card_list %}
+    <ul>
+      {% for card in card_list %}
+      <li> <!-- class="{% if account.balance < 0 %}text-danger{% endif %}" -->
+        <a href="{% url 'card-detail' card.pk %}">{{card.card_number}}: { card.account }</a> (${{ card.account.balance }}) {{ card.status }} {{ card.expiration_date }}
+      </li>
+      {% endfor %}
+    </ul>
+
+    {% else %}
+      <p>You currently have no cards with Bank ANL.</p>
+    {% endif %}
+{% endblock %}
