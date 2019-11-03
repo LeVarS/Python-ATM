@@ -37,7 +37,7 @@ The above message contains the link (**http://127.0.0.1:8000**) to the homepage 
 Below are hyperlinks to different parts of the website that will only work if it is currently running.
 
 [Accounts][Accounts page link]&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;This page has all the active accounts for every user. (Will be removed when project is done)  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\*(Will be removed when project is done)*
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\*(Will be removed when project is done)*
 
 
 
