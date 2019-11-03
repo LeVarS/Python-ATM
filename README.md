@@ -40,7 +40,7 @@ Below are hyperlinks to different parts of the website that will only work if it
 
 [Admin][admin login page]&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Log in page for the Admin(s).
 
-[Personal User Accounts][user accounts page]&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Page that will only show the logged-in users account. This page is currently only accessible by this link.
+[Personal User Accounts][user accounts page]&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Page that will only show the logged-in users account(s). This page is currently only accessible by this link.
 
 
 
