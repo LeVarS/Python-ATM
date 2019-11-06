@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Transactions</h1>
+    <p><a href="{% url 'login' %}">Click here</a> to conduct a transaction.</p>
+
+    {% if transaction_list %}
+    <ul>
+      {% for transaction in transaction_list %}
+      <li> <!-- class="{% if account.balance < 0 %}text-danger{% endif %}" -->
+        <a href="{% url 'transaction-detail' transaction.pk %}">{{ transaction.transaction_id }}: </a> (Card Number: {{ transaction.card.card_id }}) {{ transaction.transaction_date }} {{ transaction.status }}
+      </li>
+      {% endfor %}
+    </ul>
+
+    {% else %}
+      <p>You currently have no transactions with Bank ANL.</p>
+    {% endif %}
+{% endblock %}

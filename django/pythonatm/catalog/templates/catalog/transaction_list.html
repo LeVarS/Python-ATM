@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Transaction List</h1>
+  {% if transaction_list %}
+  <ul>
+    {% for transaction in transaction_list %}
+      <li>
+        <a href="{{ transaction.get_absolute_url }}">{{transaction.transaction_id}}: </a> {{ transaction.card }} {{ transaction.transaction_date }} {{ transaction.status }}
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no transactions at this bank.</p>
+  {% endif %}
+{% endblock %}

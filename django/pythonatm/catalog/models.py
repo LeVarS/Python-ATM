@@ -248,5 +248,16 @@ class Transaction(models.Model):
         max_length=1,
         help_text='Response Code for Tranaction')
 
+    """ Links account to a specific user """
+    bank_user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True)
+
     def __str__(self):
         return f'{self.type} Transaction: {self.transaction_id}, {self.atm_machine}, {self.card}'
+
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this Account."""
+        return reverse('card-detail', args=[str(self.card_number)])

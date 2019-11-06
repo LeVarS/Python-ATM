@@ -28,7 +28,7 @@ admin.site.register(ATMachine, ATMachineAdmin)
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ('transaction_id', 'type', 'card', 'atm_machine', 'transaction_date', 'status')
     list_filter = ('type', 'card', 'atm_machine', 'transaction_date', 'status')
-    fields = ['transaction_id', ('type', 'status'), ('atm_machine', 'card'), ('transaction_date', 'response_code')]
+    fields = ['transaction_id', ('type', 'status'), ('atm_machine', 'card'), ('transaction_date', 'response_code'), 'bank_user']
 admin.site.register(Transaction, TransactionAdmin)
 
 class ATMachineRefillAdmin(admin.ModelAdmin):

@@ -4,9 +4,7 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('accounts/', views.AccountListView.as_view(), name='accounts'),
-    path('cards/', views.CardListView.as_view(), name='cards'),
     path('account/<int:pk>', views.AccountDetailView.as_view(), name='account-detail'),
-    path('card/<int:pk>', views.CardDetailView.as_view(), name='card-detail'),
 ]
 
 urlpatterns += [
@@ -18,7 +16,15 @@ urlpatterns += [
 ]
 
 urlpatterns += [
+    path('cards/', views.CardListView.as_view(), name='cards'),
+    path('card/<int:pk>', views.CardDetailView.as_view(), name='card-detail'),
     path('mycards/', views.CardByUserListView.as_view(), name='my-cards'),
+]
+
+urlpatterns += [
+    path('transactions/', views.TransactionListView.as_view(), name='transaction'),
+    path('transaction/<int:pk>', views.TransactionDetailView.as_view(), name='transaction-detail'),
+    path('transactionhistory/', views.TransactionByUserListView.as_view(), name='transaction-history'),
 ]
 
 # urlpatterns += [

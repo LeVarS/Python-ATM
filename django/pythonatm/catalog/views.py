@@ -91,3 +91,19 @@ class CardByUserListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         return Card.objects.filter(bank_user=self.request.user).order_by('card_number')
+
+class TransactionListView(generic.ListView):
+    model = Transaction
+    paginate_by = 25
+
+class TransactionDetailView(generic.DetailView):
+    model = Transaction
+
+class TransactionByUserListView(LoginRequiredMixin, generic.ListView):
+    """ Generic class-based view listing a users card(s). """
+    model = Transaction
+    template_name ='catalog/transaction_list_user.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Transaction.objects.filter(bank_user=self.request.user).order_by('transaction_id')
