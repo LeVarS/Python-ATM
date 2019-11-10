@@ -191,9 +191,9 @@ class ATMachine(models.Model):
     def __str__(self):
         return f'ATM: {self.machine_id}'
 
-    def save(self, *args, **kwargs):
-        slug_save(self, 16, '0123456789')
-        Super(SomeModelWithSlug, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     slug_save(self, 16, '0123456789')
+    #     Super(SomeModelWithSlug, self).save(*args, **kwargs)
 
 
 
@@ -224,9 +224,9 @@ class ATMachineRefill(models.Model):
     def __str__(self):
         return f'ATM Refill: {self.refill_id} ${self.refill_amount}'
 
-    def save(self, *args, **kwargs):
-        slug_save(self, 6, '0123456789')
-        Super(SomeModelWithSlug, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     slug_save(self, 6, '0123456789')
+    #     Super(SomeModelWithSlug, self).save(*args, **kwargs)
 
 
 
@@ -298,9 +298,9 @@ class Transaction(models.Model):
     def __str__(self):
         return f'{self.type} Transaction: {self.transaction_id}, {self.atm_machine}, {self.card}'
 
-    def save(self, *args, **kwargs):
-        slug_save(self, 10, '0123456789')
-        Super(SomeModelWithSlug, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     slug_save(self, 10, '0123456789')
+    #     Super(SomeModelWithSlug, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         """Returns the url to access a detail record for this Account."""
