@@ -1,14 +1,29 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Bank ANL Home</h1>
-  <p>Welcome to Bank ANL, a website developed by <em>Group ANL</em>!</p>
-  <h2>Dynamic content</h2>
-  <p>The Bank has the following record counts:</p>
-  <ul>
-    <li><strong>Accounts:</strong> {{ num_accounts }}</li>
-    <li><strong>Cards:</strong> {{ num_cards }}</li>
-    <li><strong>ATM's:</strong> {{ num_atms }}</li>
-    <li><strong>Transactions:</strong> {{ num_transactions }}</li>
-  </ul>
+  <br>
+    <div class="container">
+      <div class="row">
+        <h5 class="center ">Welcome to Bank ANL, a website developed by <em>Group ANL</em>!</h5>
+      </div>
+      <br><br>
+      <div class="row">
+        <div class="col s12 light-blue darken-1 white-text z-depth-2 center">
+          <span class="flow-text">Available options</span>
+        </div>
+        <br><br><br>
+        <div class="offset-s1 col s10 offset-s1 light-blue darken-1 white-text z-depth-2 center">
+          <span class="flow-text"><a href="{% url 'my-accounts' %}" class="white-text">View Accounts</a></span>
+        </div>
+        <br><br>
+        <div class="offset-s1 col s10 offset-s1 light-blue darken-1 white-text z-depth-2 center">
+          <span class="flow-text"><a href="{% url 'my-cards' %}" class="white-text">View Cards</a></span>
+        </div>
+        <br><br>
+        <div class="offset-s1 col s10 offset-s1 light-blue darken-1 white-text z-depth-2 center">
+          <span class="flow-text"><a href="{% url 'transaction-history' %}" class="white-text">View Transactions</a></span>
+        </div>
+
+      </div>
+    </div>
 {% endblock %}
