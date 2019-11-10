@@ -19,29 +19,10 @@ class AccountCreationForm(ModelForm):
         model = Account
         fields = ('first_name', 'last_name', 'phone_number', 'balance')
 
-    # user should not see these and they should be generated for the user
-    """
-    account_number (generated)
-    user (generated)
-    """
-
-class CardCreationForm(forms.Form):
-    first_name = forms.CharField()
-    last_name = forms.CharField()
-    phone_number = forms.CharField()
-    pin = forms.CharField()
-
-    # user should not see these and they should be generated for the user
-    """
-    user (generated)
-
-    issue_date (generated)
-    issue_date = forms.DateField(default=timezone.now)
-
-    expiration_date (generated)
-    account (generated)
-    card_number (generated)
-    """
+class CardCreationForm(ModelForm):
+    class Meta:
+        model = Card
+        fields = ('account', 'pin', 'first_name', 'last_name', 'phone_number')
 
 class PhoneChangeForm(ModelForm):
     phone_number = forms.CharField(

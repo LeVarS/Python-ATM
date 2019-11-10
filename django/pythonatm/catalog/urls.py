@@ -35,6 +35,10 @@ urlpatterns += [
     path('createaccount/', views.AccountView, name='account-creation'),
 ]
 
+urlpatterns += [
+    path('createcard/', views.CardView, name='card-creation'),
+]
+
 # urlpatterns += [
 #     path('register_account/', views.RegisterAccount, name='register_account'),
 # ]

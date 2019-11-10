@@ -3,7 +3,7 @@ from django.contrib.auth.models import Group
 from catalog.models import Account, Card, ATMachine, ATMachineRefill, Transaction
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from catalog.forms import CustomUserCreationForm, AccountCreationForm, PhoneChangeForm
+from catalog.forms import CustomUserCreationForm, AccountCreationForm, PhoneChangeForm, CardCreationForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 
@@ -54,6 +54,48 @@ def register(request):
     # ../templates/registration/register.html
     return render(request, "register.html", context=context)
 
+def AccountView(request):
+    if request.method == "POST":
+        #account = Account(bank_user=request.user)
+        # form = AccountCreationForm(request.POST, instance=account)
+        form = AccountCreationForm(request.POST)
+        if form.is_valid():
+            #form.save()
+            account = form.save()
+            account.bank_user = request.user
+            account.save()
+            return redirect("my-accounts")
+        else:
+            for msg in form.errors:
+                print(form.errors[msg])
+
+    form = AccountCreationForm
+    context = {
+         'form' : form,
+    }
+    return render(request, "account_creation.html", context=context)
+
+def CardView(request):
+    if request.method == "POST":
+        #account = Card(bank_user=request.user)
+        #form = CardCreationForm(request.POST, instance=account)
+        form = CardCreationForm(request.POST)
+        if form.is_valid():
+            #form.save()
+            Card = form.save()
+            Card.bank_user = request.user
+            Card.save()
+            return redirect("my-cards")
+        else:
+            for msg in form.errors:
+                print(form.errors[msg])
+
+    form = CardCreationForm
+    context = {
+         'form' : form,
+    }
+    return render(request, "card_creation.html", context=context)
+
 def TransactionView(request):
     form = PhoneChangeForm(request.POST)
     if form.is_valid():
@@ -65,29 +107,7 @@ def TransactionView(request):
     }
     return render(request, "phone_change.html", context=context)
 
-def AccountView(request):
-    if request.method == "POST":
-        form = AccountCreationForm(request.POST)
-        if form.is_valid():
-            account = form.save()
-            account.bank_user = request.user
-            account.save()
-            return redirect("my-accounts")
-        else:
-            for msg in forms.errors:
-                print(form.errors[msg])
-                
-    form = AccountCreationForm
-    context = {
-         'form' : form,
-    }
-    return render(request, "account_creation.html", context=context)
 
-# def RegisterAccount(request):
-#     pass
-#
-# def AddCard(request):
-#     pass  
 
 class AccountListView(generic.ListView):
     model = Account

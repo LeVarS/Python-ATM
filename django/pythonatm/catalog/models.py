@@ -33,7 +33,7 @@ class Account(models.Model):
         primary_key=True,
         validators=[MinLengthValidator(12)],
         max_length=12,
-        default=get_random_id(12, "0123456789"),
+        default=0,
         help_text='Enter Account Number')
 
     # First and Second Name for Account
@@ -73,6 +73,7 @@ class Account(models.Model):
         return f'Account: {self.account_number}, {self.first_name} {self.last_name}'
 
     def save(self, *args, **kwargs):
+        account_number=get_random_id(12, "0123456789")
         super(Account, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -90,6 +91,7 @@ class Card(models.Model):
         primary_key=True,
         validators=[MinLengthValidator(16)],
         max_length=16,
+        default=0,
         help_text='Card number')
 
     """ Links account to a specific user """
@@ -128,11 +130,13 @@ class Card(models.Model):
 
     issue_date = models.DateField(
         null=True,
-        blank=True)
+        blank=True,
+        default=timezone.now)
 
     expiration_date = models.DateField(
         null=True,
-        blank=True)
+        blank=True,
+        default=(datetime.date.today() + datetime.timedelta(days=1460)))
 
     CARD_STATUS = (
         ('A', 'Activated'),
@@ -143,7 +147,7 @@ class Card(models.Model):
         max_length=1,
         choices=CARD_STATUS,
         blank=True,
-        default='D',
+        default='A',
         help_text='Card Status'
     )
 
@@ -152,8 +156,8 @@ class Card(models.Model):
         return f'Card: {self.card_number} ({self.account})'
 
     def save(self, *args, **kwargs):
-        slug_save(self, 16, '0123456789')
-        Super(SomeModelWithSlug, self).save(*args, **kwargs)
+        card_number=get_random_id(16, "0123456789")
+        super(Card, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         """Returns the url to access a detail record for this Account."""
