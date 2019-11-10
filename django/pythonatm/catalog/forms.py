@@ -14,11 +14,10 @@ class CustomUserCreationForm(UserCreationForm):
         model = User
         fields = ('first_name', 'last_name', 'email', 'username')
 
-class AccountCreationForm(forms.Form):
-    first_name = forms.CharField()
-    last_name = forms.CharField()
-    phone_number = forms.CharField()
-    balance = forms.IntegerField()
+class AccountCreationForm(ModelForm):
+    class Meta:
+        model = Account
+        fields = ('first_name', 'last_name', 'phone_number', 'balance')
 
     # user should not see these and they should be generated for the user
     """

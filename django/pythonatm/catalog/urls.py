@@ -28,7 +28,11 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-    path('phonechange/', views.TransactionView, name='phonechange'),
+    path('phonechange/', views.TransactionView, name='phone-change'),
+]
+
+urlpatterns += [
+    path('createaccount/', views.AccountView, name='account-creation'),
 ]
 
 # urlpatterns += [

@@ -64,6 +64,25 @@ def TransactionView(request):
          'form' : form,
     }
     return render(request, "phone_change.html", context=context)
+
+def AccountView(request):
+    if request.method == "POST":
+        form = AccountCreationForm(request.POST)
+        if form.is_valid():
+            account = form.save()
+            account.bank_user = request.user
+            account.save()
+            return redirect("my-accounts")
+        else:
+            for msg in forms.errors:
+                print(form.errors[msg])
+                
+    form = AccountCreationForm
+    context = {
+         'form' : form,
+    }
+    return render(request, "account_creation.html", context=context)
+
 # def RegisterAccount(request):
 #     pass
 #

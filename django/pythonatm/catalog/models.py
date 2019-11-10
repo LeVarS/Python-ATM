@@ -4,7 +4,24 @@ from django.core.validators import MinLengthValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse # Used to generate URLs by reversing the URL patterns
 from django.contrib.auth.models import User #, AbstractUser
+from django.utils.crypto import get_random_string
 
+id_list = []
+
+def get_random_id(length, char_set):
+    id = get_random_string(length, char_set)
+    unique = False
+    while not unique:
+        if id not in id_list:
+            unique = True
+        else:
+            id = get_random_string(length, char_set)
+
+    id_list.append(id)
+    file = open("id.txt", "a")
+    file.write(id + "\n")
+    file.close()
+    return id
 
 # Create your models here.
 """ Account """
@@ -16,6 +33,7 @@ class Account(models.Model):
         primary_key=True,
         validators=[MinLengthValidator(12)],
         max_length=12,
+        default=get_random_id(12, "0123456789"),
         help_text='Enter Account Number')
 
     # First and Second Name for Account
@@ -41,7 +59,7 @@ class Account(models.Model):
     # Balance for Account
     balance = models.IntegerField(
         #verbose_name='Balance',
-        help_text='Balance for Account')
+        help_text='Initial balance for Account')
 
     """ Links account to a specific user """
     bank_user = models.ForeignKey(
@@ -55,8 +73,7 @@ class Account(models.Model):
         return f'Account: {self.account_number}, {self.first_name} {self.last_name}'
 
     def save(self, *args, **kwargs):
-        slug_save(self, 12, '0123456789')
-        Super(SomeModelWithSlug, self).save(*args, **kwargs)
+        super(Account, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         """Returns the url to access a detail record for this Account."""
@@ -284,7 +301,6 @@ class Transaction(models.Model):
     def get_absolute_url(self):
         """Returns the url to access a detail record for this Account."""
         return reverse('card-detail', args=[str(self.card_number)])
-
 
 def slug_save(obj, length, char_set):
     if not obj.slug:
