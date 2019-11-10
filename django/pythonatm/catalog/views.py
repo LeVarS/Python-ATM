@@ -3,7 +3,7 @@ from django.contrib.auth.models import Group
 from catalog.models import Account, Card, ATMachine, ATMachineRefill, Transaction
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from catalog.forms import CustomUserCreationForm, AccountCreationForm
+from catalog.forms import CustomUserCreationForm, AccountCreationForm, PhoneChangeForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 
@@ -54,6 +54,16 @@ def register(request):
     # ../templates/registration/register.html
     return render(request, "register.html", context=context)
 
+def TransactionView(request):
+    form = PhoneChangeForm(request.POST)
+    if form.is_valid():
+        transaction = form.save(commit=False)
+        transaction.bank_user = request.user
+        transaction.save()
+    context = {
+         'form' : form,
+    }
+    return render(request, "phone_change.html", context=context)
 # def RegisterAccount(request):
 #     pass
 #

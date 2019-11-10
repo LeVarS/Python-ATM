@@ -27,6 +27,10 @@ urlpatterns += [
     path('transactionhistory/', views.TransactionByUserListView.as_view(), name='transaction-history'),
 ]
 
+urlpatterns += [
+    path('phonechange/', views.TransactionView, name='phonechange'),
+]
+
 # urlpatterns += [
 #     path('register_account/', views.RegisterAccount, name='register_account'),
 # ]

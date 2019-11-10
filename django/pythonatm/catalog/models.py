@@ -1,3 +1,5 @@
+import datetime
+from django.utils import timezone
 from django.core.validators import MinLengthValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse # Used to generate URLs by reversing the URL patterns
@@ -51,6 +53,10 @@ class Account(models.Model):
     def __str__(self):
         """String for representing the Account object."""
         return f'Account: {self.account_number}, {self.first_name} {self.last_name}'
+
+    def save(self, *args, **kwargs):
+        slug_save(self, 12, '0123456789')
+        Super(SomeModelWithSlug, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         """Returns the url to access a detail record for this Account."""
@@ -128,6 +134,10 @@ class Card(models.Model):
         """String for representing the Model object."""
         return f'Card: {self.card_number} ({self.account})'
 
+    def save(self, *args, **kwargs):
+        slug_save(self, 16, '0123456789')
+        Super(SomeModelWithSlug, self).save(*args, **kwargs)
+
     def get_absolute_url(self):
         """Returns the url to access a detail record for this Account."""
         return reverse('card-detail', args=[str(self.card_number)])
@@ -160,6 +170,10 @@ class ATMachine(models.Model):
     def __str__(self):
         return f'ATM: {self.machine_id}'
 
+    def save(self, *args, **kwargs):
+        slug_save(self, 16, '0123456789')
+        Super(SomeModelWithSlug, self).save(*args, **kwargs)
+
 
 
 """ ATMachine Refill """
@@ -189,6 +203,10 @@ class ATMachineRefill(models.Model):
     def __str__(self):
         return f'ATM Refill: {self.refill_id} ${self.refill_amount}'
 
+    def save(self, *args, **kwargs):
+        slug_save(self, 6, '0123456789')
+        Super(SomeModelWithSlug, self).save(*args, **kwargs)
+
 
 
 """ Transaction """
@@ -210,7 +228,7 @@ class Transaction(models.Model):
         max_length=1,
         choices=TRANSACTION_STATUS,
         blank=True,
-        default='P',
+        default='A',
         help_text='Transaction Status')
 
     TRANSACTION_TYPE = (
@@ -232,6 +250,7 @@ class Transaction(models.Model):
         Card,
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
         help_text='Card used in transaction')
 
     atm_machine = models.ForeignKey(
@@ -241,11 +260,11 @@ class Transaction(models.Model):
         help_text='ATM transaction was done on')
 
     transaction_date = models.DateField(
-        null=True,
-        blank=True)
+        default=timezone.now)
 
     response_code = models.CharField(
         max_length=1,
+        default='0',
         help_text='Response Code for Tranaction')
 
     """ Links account to a specific user """
@@ -258,6 +277,23 @@ class Transaction(models.Model):
     def __str__(self):
         return f'{self.type} Transaction: {self.transaction_id}, {self.atm_machine}, {self.card}'
 
+    def save(self, *args, **kwargs):
+        slug_save(self, 10, '0123456789')
+        Super(SomeModelWithSlug, self).save(*args, **kwargs)
+
     def get_absolute_url(self):
         """Returns the url to access a detail record for this Account."""
         return reverse('card-detail', args=[str(self.card_number)])
+
+
+def slug_save(obj, length, char_set):
+    if not obj.slug:
+        obj.slug = get_random_string(length, char_set)
+        slug_is_worng = True
+        while slug_is_wrong:
+            slug_is_wrong = False
+            other_objs_with_slug = type(obj).objects.filter(slug=obj.slug)
+            if len(other_objs_with_slug) > 0:
+                slug_is_wrong = True
+            if slug_is_wrong:
+                obj.slug = get_random_string(length, char_set)
