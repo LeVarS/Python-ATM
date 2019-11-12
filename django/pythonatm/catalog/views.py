@@ -3,7 +3,7 @@ from django.contrib.auth.models import Group
 from catalog.models import Account, Card, ATMachine, ATMachineRefill, Transaction
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from catalog.forms import CustomUserCreationForm, AccountCreationForm, PhoneChangeForm, CardCreationForm
+from catalog.forms import CustomUserCreationForm, AccountCreationForm, PhoneChangeForm, CardCreationForm, WithdrawTransactionForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 
@@ -61,7 +61,7 @@ def AccountView(request):
         form = AccountCreationForm(request.POST)
         if form.is_valid():
             #form.save()
-            account = form.save()
+            account = form.save(commit=False)
             account.bank_user = request.user
             account.save()
             return redirect("my-accounts")
@@ -79,22 +79,40 @@ def CardView(request):
     if request.method == "POST":
         #account = Card(bank_user=request.user)
         #form = CardCreationForm(request.POST, instance=account)
-        form = CardCreationForm(request.POST)
+        form = CardCreationForm(request.user, request.POST)
         if form.is_valid():
             #form.save()
-            Card = form.save()
-            Card.bank_user = request.user
-            Card.save()
+
+            card = form.save()
+            card.bank_user = request.user
+            card.save()
             return redirect("my-cards")
         else:
             for msg in form.errors:
                 print(form.errors[msg])
 
-    form = CardCreationForm
+    form = CardCreationForm(request.user)
     context = {
          'form' : form,
     }
     return render(request, "card_creation.html", context=context)
+
+def WithdrawTransactionView(request):
+    if request.method == "POST":
+        form = WithdrawTransactionForm(request.user, request.POST)
+        if form.is_valid():
+            transaction = form.save()
+            transaction.bank_user = request.user
+            transaction.save()
+            return redirect("transaction-history")
+        else:
+            for msg in form.errors:
+                print(form.errors[msg])
+    form = WithdrawTransactionForm(request.user)
+    context = {
+         'form' : form,
+    }
+    return render(request, "withdraw.html", context=context)
 
 def TransactionView(request):
     form = PhoneChangeForm(request.POST)

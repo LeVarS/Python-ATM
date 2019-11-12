@@ -3,12 +3,13 @@
 {% block content %}
     <h1>Transactions</h1>
     <p><a href="{% url 'phone-change' %}">Click here</a> to conduct a transaction.</p>
+    <p><a href="{% url 'withdraw' %}">Click here</a> to withdraw.</p>
 
     {% if transaction_list %}
     <ul>
       {% for transaction in transaction_list %}
       <li> <!-- class="{% if account.balance < 0 %}text-danger{% endif %}" -->
-        <a href="{% url 'transaction-detail' transaction.pk %}">{{ transaction.transaction_id }}: </a> (Card Number: {{ transaction.card.card_id }}) {{ transaction.transaction_date }} {{ transaction.status }}
+        <a href="{% url 'transaction-detail' transaction.pk %}">{{ transaction.transaction_id }}: </a> (Card Number: {{ transaction.card.card_number }}) {{ transaction.transaction_date }} {{ transaction.status }}
       </li>
       {% endfor %}
     </ul>

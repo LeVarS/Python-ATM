@@ -32,6 +32,10 @@ urlpatterns += [
 ]
 
 urlpatterns += [
+    path('withdraw/', views.WithdrawTransactionView, name='withdraw'),
+]
+
+urlpatterns += [
     path('createaccount/', views.AccountView, name='account-creation'),
 ]
 

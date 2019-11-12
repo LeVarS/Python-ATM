@@ -5,21 +5,23 @@ from django.db import models
 from django.urls import reverse # Used to generate URLs by reversing the URL patterns
 from django.contrib.auth.models import User #, AbstractUser
 from django.utils.crypto import get_random_string
+from django.db.models.signals import post_save
 
 id_list = []
 
-def get_random_id(length, char_set):
+def get_random_id(length, char_set, type):
     id = get_random_string(length, char_set)
     unique = False
     while not unique:
-        if id not in id_list:
+        id_with_type = id + type
+        if id_with_type not in id_list:
             unique = True
         else:
             id = get_random_string(length, char_set)
 
-    id_list.append(id)
+    id_list.append(id + type)
     file = open("id.txt", "a")
-    file.write(id + "\n")
+    file.write(id + type + "\n")
     file.close()
     return id
 
@@ -73,8 +75,11 @@ class Account(models.Model):
         return f'Account: {self.account_number}, {self.first_name} {self.last_name}'
 
     def save(self, *args, **kwargs):
-        account_number=get_random_id(12, "0123456789")
+
+        self.account_number = get_random_id(12, "0123456789", "ACC")
         super(Account, self).save(*args, **kwargs)
+        #number.save()
+
 
     def get_absolute_url(self):
         """Returns the url to access a detail record for this Account."""
@@ -156,7 +161,7 @@ class Card(models.Model):
         return f'Card: {self.card_number} ({self.account})'
 
     def save(self, *args, **kwargs):
-        card_number=get_random_id(16, "0123456789")
+        self.card_number=get_random_id(16, "0123456789", "C")
         super(Card, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -219,14 +224,21 @@ class ATMachineRefill(models.Model):
 
     refill_date=models.DateField(
         null=True,
-        blank=True)
+        blank=True,
+        default=timezone.now)
 
     def __str__(self):
         return f'ATM Refill: {self.refill_id} ${self.refill_amount}'
 
-    # def save(self, *args, **kwargs):
-    #     slug_save(self, 6, '0123456789')
-    #     Super(SomeModelWithSlug, self).save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        #refill_id = get_random_id(16, "0123456789", "R")
+        atm = self.atm_machine
+        atm.last_refill = self.refill_date
+        atm.current_balance += self.refill_amount
+        atm.next_maintenance = datetime.date.today() + datetime.timedelta(days=7)
+        atm.save()
+        self.refill_id = get_random_id(6, "0123456789", "R")
+        super(ATMachineRefill, self).save(*args, **kwargs)
 
 
 
@@ -298,9 +310,9 @@ class Transaction(models.Model):
     def __str__(self):
         return f'{self.type} Transaction: {self.transaction_id}, {self.atm_machine}, {self.card}'
 
-    # def save(self, *args, **kwargs):
-    #     slug_save(self, 10, '0123456789')
-    #     Super(SomeModelWithSlug, self).save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        self.transaction_id = get_random_id(10, "0123456789", "T")
+        super(Transaction, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         """Returns the url to access a detail record for this Account."""

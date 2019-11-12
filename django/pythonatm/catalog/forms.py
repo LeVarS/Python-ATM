@@ -20,9 +20,38 @@ class AccountCreationForm(ModelForm):
         fields = ('first_name', 'last_name', 'phone_number', 'balance')
 
 class CardCreationForm(ModelForm):
+    account = forms.ModelChoiceField(queryset=Account.objects.all())
+
+    def __init__(self, user, *args, **kwargs):
+        super(CardCreationForm, self).__init__(*args, **kwargs)
+        self.fields['account'].queryset = Account.objects.filter(bank_user=user).order_by('account_number')
+
+    def save(self):
+        card = super().save(commit=False)
+        # card.account = Account.objects.get(account=self.account)
+        # card.save()
+        return card
+
     class Meta:
         model = Card
         fields = ('account', 'pin', 'first_name', 'last_name', 'phone_number')
+
+class WithdrawTransactionForm(ModelForm):
+    amount = forms.IntegerField(min_value=0)
+    card = forms.ModelChoiceField(queryset=Card.objects.all())
+    atm_machine = forms.ModelChoiceField(queryset=ATMachine.objects.all())
+
+    def __init__(self, user, *args, **kwargs):
+        super(WithdrawTransactionForm, self).__init__(*args, **kwargs)
+        self.fields['card'].queryset = Card.objects.filter(bank_user=user).order_by('card_number')
+
+    def save(self):
+        transaction = super().save(commit=False)
+        return transaction
+
+    class Meta:
+        model = Transaction
+        fields = ('amount', 'card', 'atm_machine')
 
 class PhoneChangeForm(ModelForm):
     phone_number = forms.CharField(
@@ -34,43 +63,3 @@ class PhoneChangeForm(ModelForm):
     class Meta:
         model = Transaction
         fields = ('atm_machine',)
-
-# class PhoneChangeForm(forms.Form):
-    #atm_machine = forms.ForeignKey()
-
-    # transaction_date = forms.DateField(default=datetime.date.today())
-
-    # response_code = forms.CharField(default=0)
-
-    # def clean_date(self):
-    #     tdate = datetime.date.today()
-    #
-    #     tdate = self.cleaned_data['tdate']
-
-    # TRANSACTION_TYPE = (
-    #     ('PHC', 'Phone Change'),
-    #     ('PIC', 'PIN Change'),
-    #     ('CHW', 'Cash Withdrawal'),
-    #     ('CHT', 'Cash Transfer'),
-    #     ('BLE', 'Balance Enquiry')
-    # )
-    #
-    # type = forms.CharField(
-    #     max_length=3,
-    #     choices=TRANSACTION_TYPE,
-    #     blank=True,
-    #     default='CHW',
-    #     help_text='Tranaction Type')
-    #
-    # transaction_type = forms.CharField()
-
-    # user should not see these and they should be generated for the user
-    """
-    user (generated)
-    transaction_id (generated)
-    transaction_date (generated)
-    status (generated)
-    card (user should have have choice regrding which card they want to use)
-    atm_machine (user should have choice regarding atm location)
-    response_code (generated)
-    """

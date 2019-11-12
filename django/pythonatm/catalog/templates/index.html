@@ -12,17 +12,28 @@
           <span class="flow-text">Available options</span>
         </div>
         <br><br><br>
-        <div class="offset-s1 col s10 offset-s1 light-blue darken-1 white-text z-depth-2 center">
-          <span class="flow-text"><a href="{% url 'my-accounts' %}" class="white-text">View Accounts</a></span>
-        </div>
-        <br><br>
-        <div class="offset-s1 col s10 offset-s1 light-blue darken-1 white-text z-depth-2 center">
-          <span class="flow-text"><a href="{% url 'my-cards' %}" class="white-text">View Cards</a></span>
-        </div>
-        <br><br>
-        <div class="offset-s1 col s10 offset-s1 light-blue darken-1 white-text z-depth-2 center">
-          <span class="flow-text"><a href="{% url 'transaction-history' %}" class="white-text">View Transactions</a></span>
-        </div>
+        {% if user.is_authenticated %}
+          <div class="offset-s1 col s10 offset-s1 light-blue darken-1 white-text z-depth-2 center">
+            <span class="flow-text"><a href="{% url 'my-accounts' %}" class="white-text">View Accounts</a></span>
+          </div>
+          <br><br>
+          <div class="offset-s1 col s10 offset-s1 light-blue darken-1 white-text z-depth-2 center">
+            <span class="flow-text"><a href="{% url 'my-cards' %}" class="white-text">View Cards</a></span>
+          </div>
+          <br><br>
+          <div class="offset-s1 col s10 offset-s1 light-blue darken-1 white-text z-depth-2 center">
+            <span class="flow-text"><a href="{% url 'transaction-history' %}" class="white-text">View Transactions</a></span>
+          </div>
+        {% else %}
+          <div class="offset-s1 col s10 offset-s1 light-blue darken-1 white-text z-depth-2 center">
+            <span class="flow-text"><a href="{% url 'login' %}" class="white-text">Sign In</a></span>
+          </div>
+          <br><br>
+          <div class="offset-s1 col s10 offset-s1 light-blue darken-1 white-text z-depth-2 center">
+            <span class="flow-text"><a href="{% url 'register' %}" class="white-text">Register</a></span>
+          </div>
+        {% endif %}
+
 
       </div>
     </div>

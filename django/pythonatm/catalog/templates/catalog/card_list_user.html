@@ -8,7 +8,7 @@
     <ul>
       {% for card in card_list %}
       <li> <!-- class="{% if account.balance < 0 %}text-danger{% endif %}" -->
-        <a href="{% url 'card-detail' card.pk %}">{{card.card_number}}: { card.account }</a> (${{ card.account.balance }}) {{ card.status }} {{ card.expiration_date }}
+        <a href="{% url 'card-detail' card.pk %}">{{card.card_number}}: {{ card.account }}</a> (${{ card.account.balance }}) {{ card.status }} {{ card.expiration_date }}
       </li>
       {% endfor %}
     </ul>
