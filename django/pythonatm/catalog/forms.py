@@ -46,7 +46,7 @@ class WithdrawTransactionForm(ModelForm):
         self.fields['card'].queryset = Card.objects.filter(bank_user=user).order_by('card_number')
 
     def save(self):
-        transaction = super().save(commit=False)
+        transaction = super().save(commit=False)    
         return transaction
 
     class Meta:
