@@ -88,7 +88,8 @@ class CashTransferForm(forms.Form):
             transaction = Transaction()
             transaction.bank_user = account.bank_user
             transaction.account = self.cleaned_data['account']
-            transaction.description = f"Transfered ${amount} from {account.first_name} {account.last_name}'s account to {instance.first_name} {instance.last_name}'s account"
+            transaction.type = 'T'
+            transaction.description = f"Transfered ${amount} from {account.first_name} {account.last_name}'s account (Account #: {account.account_number}) to {instance.first_name} {instance.last_name}'s account (Account #: {account.account_number})."
             transaction.save()
             instance.balance += amount
             account.balance -= amount
@@ -120,7 +121,7 @@ class WithdrawTransactionForm(forms.Form):
         else:
             transaction = Transaction()
             transaction.bank_user = account.bank_user
-            transaction.description = f"Withdrew ${amount} from {account.first_name} {account.last_name}'s account (Account #: {account.account_number})"
+            transaction.description = f"Withdrew ${amount} from {account.first_name} {account.last_name}'s account (Account #: {account.account_number})."
             transaction.account = self.cleaned_data['account']
             transaction.atm_machine = self.cleaned_data['atm_machine']
             transaction.type = 'W'
@@ -154,7 +155,7 @@ class DepositTransactionForm(forms.Form):
         else:
             transaction = Transaction()
             transaction.bank_user = account.bank_user
-            transaction.description = f"Deposited ${amount} into {account.first_name} {account.last_name}'s account (Account #: {account.account_number})"
+            transaction.description = f"Deposited ${amount} into {account.first_name} {account.last_name}'s account (Account #: {account.account_number})."
             transaction.account = self.cleaned_data['account']
             transaction.atm_machine = self.cleaned_data['atm_machine']
             transaction.type = 'D'
@@ -164,21 +165,3 @@ class DepositTransactionForm(forms.Form):
             account.balance += amount
             account.update()
         return amount
-    # def save(self):
-    #     transaction = super().save(commit=False)
-    #     return transaction
-    #
-    # class Meta:
-    #     model = Transaction
-    #     fields = ('amount', 'card', 'atm_machine')
-
-# class PhoneChangeForm(ModelForm):
-#     phone_number = forms.CharField(
-#         #verbose_name='Phone',
-#         validators=[MinLengthValidator(10)],
-#         max_length=10,
-#         help_text='Enter new phone number for Account')
-#
-#     class Meta:
-#         model = Transaction
-#         fields = ('atm_machine',)

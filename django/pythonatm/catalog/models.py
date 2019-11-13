@@ -176,7 +176,7 @@ class Card(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return f'Card #: {self.card_number} - {self.first_name} {self.last_name} - Account #: {self.account.account_number}'
+        return f'Card #: {self.card_number} - {self.first_name} {self.last_name} - Account #: {self.account}'
 
     def save(self, *args, **kwargs):
         self.card_number=get_random_id(16, "0123456789", "C")
@@ -289,21 +289,10 @@ class Transaction(models.Model):
         max_length=10,
         help_text='Identification Number for Transaction')
 
-    # TRANSACTION_STATUS = (
-    #     ('P', 'Pending'),
-    #     ('A', 'Approved')
-    # )
-
-    # status = models.CharField(
-    #     max_length=1,
-    #     choices=TRANSACTION_STATUS,
-    #     blank=True,
-    #     default='A',
-    #     help_text='Transaction Status')
-
     TRANSACTION_TYPE = (
         ('W', 'Withdrawal'),
         ('D', 'Deposit'),
+        ('T', 'Transfer'),
     )
 
     type = models.CharField(
@@ -312,13 +301,6 @@ class Transaction(models.Model):
         blank=True,
         default='W',
         help_text='Tranaction Type')
-
-    # card = models.ForeignKey(
-    #     Card,
-    #     on_delete=models.SET_NULL,
-    #     null=True,
-    #     blank=True,
-    #     help_text='Account used in transaction')
 
     account = models.ForeignKey(
         Account,
@@ -336,11 +318,6 @@ class Transaction(models.Model):
     transaction_date = models.DateField(
         default=timezone.now)
 
-    # response_code = models.CharField(
-    #     max_length=1,
-    #     default='0',
-    #     help_text='Response Code for Tranaction')
-
     """ Links account to a specific user """
     bank_user = models.ForeignKey(
         User,
@@ -353,7 +330,7 @@ class Transaction(models.Model):
         default='Transaction')
 
     def __str__(self):
-        return f'Transaction #: {self.transaction_id} - {self.description} - {self.date}'
+        return f'Transaction #: {self.transaction_id} - {self.description} - {self.transaction_date}'
 
     def save(self, *args, **kwargs):
         self.transaction_id = get_random_id(10, "0123456789", "T")
@@ -366,15 +343,3 @@ class Transaction(models.Model):
     def get_absolute_url(self):
         """Returns the url to access a detail record for this Account."""
         return reverse('card-detail', args=[str(self.card_number)])
-
-# def slug_save(obj, length, char_set):
-#     if not obj.slug:
-#         obj.slug = get_random_string(length, char_set)
-#         slug_is_worng = True
-#         while slug_is_wrong:
-#             slug_is_wrong = False
-#             other_objs_with_slug = type(obj).objects.filter(slug=obj.slug)
-#             if len(other_objs_with_slug) > 0:
-#                 slug_is_wrong = True
-#             if slug_is_wrong:
-#                 obj.slug = get_random_string(length, char_set)
