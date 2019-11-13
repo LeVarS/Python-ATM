@@ -158,10 +158,10 @@ def DepositTransactionView(request):
         form = DepositTransactionForm(request.user, request.POST)
         if form.is_valid():
             form.deposit_amount()
-                # if form.redirect:
-                #     return redirect("insufficient-funds")
-                # else:
-            return redirect("transaction-history")
+            if form.redirect:
+                return redirect("insufficient-atm-capacity")
+            else:
+                return redirect("transaction-history")
         else:
             for msg in form.errors:
                 print(form.errors[msg])
@@ -170,22 +170,6 @@ def DepositTransactionView(request):
         'form' : form,
     }
     return render(request, "catalog/deposit.html", context=context)
-    #
-    # if request.method == "POST":
-    #     form = WithdrawTransactionForm(request.user, request.POST)
-    #     if form.is_valid():
-    #         transaction = form.save()
-    #         transaction.bank_user = request.user
-    #         transaction.save()
-    #         return redirect("transaction-history")
-    #     else:
-    #         for msg in form.errors:
-    #             print(form.errors[msg])
-    # form = WithdrawTransactionForm(request.user)
-    # context = {
-    #      'form' : form,
-    # }
-    # return render(request, "withdraw.html", context=context)
 
 def EditAccountView(request, pk):
     instance = Account.objects.get(account_number=pk)
@@ -250,9 +234,16 @@ def AccountErrorView(request):
 
     return render(request, 'post_error.html', context=context)
 
-def AtmErrorView(request):
+def AtmFundsErrorView(request):
     context = {
         'message' : "ATM Error - Insufficient funds"
+    }
+
+    return render(request, 'post_error.html', context=context)
+
+def AtmCapacityErrorView(request):
+    context = {
+        'message' : "ATM Error - Insufficient capacity"
     }
 
     return render(request, 'post_error.html', context=context)

@@ -22,7 +22,7 @@ admin.site.register(Card, CardAdmin)
 class ATMachineAdmin(admin.ModelAdmin):
     list_display = ('machine_id', 'current_balance', 'last_refill', 'next_maintenance')
     list_filter = ('last_refill', 'next_maintenance')
-    fields = ['machine_id', 'address', ('current_balance', 'minimum_balance')]
+    fields = ['machine_id', 'address', ('maximum_balance', 'minimum_balance'), 'current_balance']
 admin.site.register(ATMachine, ATMachineAdmin)
 
 class TransactionAdmin(admin.ModelAdmin):

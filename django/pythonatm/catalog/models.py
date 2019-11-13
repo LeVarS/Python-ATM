@@ -212,6 +212,11 @@ class ATMachine(models.Model):
     current_balance = models.IntegerField(
         help_text='Current Balance of ATM')
 
+    maximum_balance = models.IntegerField(
+        null = True,
+        blank = True,
+        help_text='Minimum Balance for ATM')
+
     minimum_balance = models.IntegerField(
         help_text='Minimum Balance for ATM')
 

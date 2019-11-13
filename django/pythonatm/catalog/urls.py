@@ -68,7 +68,11 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-    path('atmerror/', views.AtmErrorView, name='insufficient-atm-funds'),
+    path('atmfundserror/', views.AtmFundsErrorView, name='insufficient-atm-funds'),
+]
+
+urlpatterns += [
+    path('atmcaperror/', views.AtmCapacityErrorView, name='insufficient-atm-capacity'),
 ]
 
 
