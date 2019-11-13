@@ -81,7 +81,7 @@ class Account(models.Model):
 
     def __str__(self):
         """String for representing the Account object."""
-        return f'Account: {self.account_number}, {self.first_name} {self.last_name}'
+        return f'Account #: {self.account_number} - {self.first_name} {self.last_name}'
 
     def save(self, *args, **kwargs):
         self.account_number = get_random_id(12, "0123456789", "ACC")
@@ -176,7 +176,7 @@ class Card(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return f'Card: {self.card_number} ({self.account})'
+        return f'Card #: {self.card_number} - {self.first_name} {self.last_name} - Account #: {self.account.account_number}'
 
     def save(self, *args, **kwargs):
         self.card_number=get_random_id(16, "0123456789", "C")
@@ -260,7 +260,7 @@ class ATMachineRefill(models.Model):
         default=timezone.now)
 
     def __str__(self):
-        return f'ATM Refill: {self.refill_id} ${self.refill_amount}'
+        return f'Refill #: {self.refill_id} - ${self.refill_amount} - Location: {self.atm_machine.address}'
 
     def save(self, *args, **kwargs):
         #refill_id = get_random_id(16, "0123456789", "R")
@@ -348,7 +348,7 @@ class Transaction(models.Model):
         default='Transaction')
 
     def __str__(self):
-        return f'{self.type} Transaction: {self.transaction_id}, {self.atm_machine}, {self.account}'
+        return f'Transaction #: {self.transaction_id} - {self.description} - {self.date}'
 
     def save(self, *args, **kwargs):
         self.transaction_id = get_random_id(10, "0123456789", "T")

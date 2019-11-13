@@ -193,6 +193,9 @@ def EditAccountView(request, pk):
         form = AccountChangeForm(request.POST, instance=instance)
         if form.is_valid():
             temp = form.save(commit=False)
+            instance.first_name = temp.first_name
+            instance.last_name = temp.last_name
+            instance.address = temp.address
             instance.phone_number = temp.phone_number
             instance.update()
             return redirect('account-detail', pk)
@@ -208,6 +211,9 @@ def EditCardView(request, pk):
         form = CardChangeForm(request.POST, instance=instance)
         if form.is_valid():
             temp = form.save(commit=False)
+            instance.first_name = temp.first_name
+            instance.last_name = temp.last_name
+            instance.address = temp.address
             instance.pin = temp.pin
             instance.update()
             return redirect('card-detail', pk)

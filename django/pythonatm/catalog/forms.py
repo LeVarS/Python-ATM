@@ -87,7 +87,8 @@ class CashTransferForm(forms.Form):
         else:
             transaction = Transaction()
             transaction.bank_user = account.bank_user
-            transaction.description = f"Transfered ${amount} from {account.first_name}'s account to {instance.first_name}'s account"
+            transaction.account = self.cleaned_data['account']
+            transaction.description = f"Transfered ${amount} from {account.first_name} {account.last_name}'s account to {instance.first_name} {instance.last_name}'s account"
             transaction.save()
             instance.balance += amount
             account.balance -= amount
@@ -119,8 +120,8 @@ class WithdrawTransactionForm(forms.Form):
         else:
             transaction = Transaction()
             transaction.bank_user = account.bank_user
-            transaction.description = f"Withdrew ${amount} from {account.first_name}'s account (Account #: {account.account_number})"
-            transaction.account = account
+            transaction.description = f"Withdrew ${amount} from {account.first_name} {account.last_name}'s account (Account #: {account.account_number})"
+            transaction.account = self.cleaned_data['account']
             transaction.type = 'W'
             transaction.save()
             atm.current_balance -= amount
@@ -149,8 +150,8 @@ class DepositTransactionForm(forms.Form):
         # else:
         transaction = Transaction()
         transaction.bank_user = account.bank_user
-        transaction.description = f"Deposited ${amount} into {account.first_name}'s account (Account #: {account.account_number})"
-        transaction.account = account
+        transaction.description = f"Deposited ${amount} into {account.first_name} {account.last_name}'s account (Account #: {account.account_number})"
+        transaction.account = self.cleaned_data['account']
         transaction.type = 'D'
         transaction.save()
         atm.current_balance += amount

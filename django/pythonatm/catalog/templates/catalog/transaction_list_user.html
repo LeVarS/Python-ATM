@@ -3,15 +3,28 @@
 {% block content %}
     <h1>Transactions</h1>
     <!-- <p><a href="">Click here</a> to conduct a transaction.</p> -->
-    <p><a href="{% url 'withdraw' %}">Click here</a> to withdraw money.</p>
+    <!-- <div class="container"> -->
+      <div class="row">
+        <div class="col s2 light-blue darken-1 white-text z-depth-2 center">
+          <span class="flow-text"><a href="{% url 'withdraw' %}" class="white-text">Withdraw</a></span>
+        </div>
+        <div class="col s2 light-blue darken-1 white-text z-depth-2 center">
+          <span class="flow-text"><a href="{% url 'deposit' %}" class="white-text">Deposit</a></span>
+        </div>
+        <div class="col s2 light-blue darken-1 white-text z-depth-2 center">
+          <span class="flow-text"><a href="{% url 'transfer' %}" class="white-text">Transfer</a></span>
+        </div>
+      </div>
+    <!-- </div> -->
+    <!-- <p><a href="{% url 'withdraw' %}">Click here</a> to withdraw money.</p>
     <p><a href="{% url 'transfer' %}">Click here</a> to transfer money.</p>
-    <p><a href="{% url 'deposit' %}">Click here</a> to deposit money.</p>
+    <p><a href="{% url 'deposit' %}">Click here</a> to deposit money.</p> -->
 
     {% if transaction_list %}
     <ul>
       {% for transaction in transaction_list %}
       <li> <!-- class="{% if account.balance < 0 %}text-danger{% endif %}" -->
-        <a href="{% url 'transaction-detail' transaction.pk %}">{{ transaction.description }}: </a> {{ transaction.transaction_date }}
+        <a href="{% url 'transaction-detail' transaction.pk %}">{{ transaction.description }}</a> - {{ transaction.transaction_date }}
       </li>
       {% endfor %}
     </ul>

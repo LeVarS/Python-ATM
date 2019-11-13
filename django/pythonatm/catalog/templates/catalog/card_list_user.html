@@ -2,7 +2,12 @@
 
 {% block content %}
     <h1>Cards</h1>
-    <p><a href="{% url 'card-creation' %}">Click here</a> to add a card to your account(s).</p>
+    <div class="row">
+      <div class="col s2 light-blue darken-1 white-text z-depth-2 center">
+        <span class="flow-text"><a href="{% url 'card-creation' %}" class="white-text">Add a card now!</a></span>
+      </div>
+    </div>
+    <!-- <p><a href="{% url 'card-creation' %}">Click here</a> to add a card to your account(s).</p> -->
 
     {% if card_list %}
     <ul>

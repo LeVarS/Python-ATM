@@ -1,8 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <p><a href="{% url 'edit-account' account.pk %}">Click here</a> to edit this account.</p>
-  <h1>Account #: {{ account.account_number }}</h1>
+  <h1>Account Details</h1>
 
   <!-- <p><strong>Author:</strong> <a href="">{{ book.author }}</a></p> <!-- author detail link not yet defined -->
   <p><strong>Account Number:</strong> {{ account.account_number }}</p>
@@ -10,6 +9,11 @@
   <p><strong>Address:</strong> {{ account.address }}</p>
   <p><strong>Phone Number:</strong> {{ account.phone_number }}</p>
   <p><strong>Balance:</strong> {{ account.balance }}</p>
+  <div class="row">
+    <div class="col s2 light-blue darken-1 white-text z-depth-2 center">
+      <span class="flow-text"><a href="{% url 'edit-account' account.pk %}" class="white-text">Edit Card</a></span>
+    </div>
+  </div>
 
   <!-- <div style="margin-left:20px;margin-top:20px">
     <h4>Copies</h4>

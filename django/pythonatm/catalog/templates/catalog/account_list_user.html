@@ -2,7 +2,12 @@
 
 {% block content %}
     <h1>Accounts</h1>
-    <p><a href="{% url 'account-creation' %}">Click here</a> to add a bank account.</p>
+    <div class="row">
+      <div class="col s3 light-blue darken-1 white-text z-depth-2 center">
+        <span class="flow-text"><a href="{% url 'account-creation' %}" class="white-text">Add an account now!</a></span>
+      </div>
+    </div>
+    <!-- <p><a href="{% url 'account-creation' %}">Click here</a> to add a bank account.</p> -->
 
     {% if account_list %}
     <ul>
