@@ -6,7 +6,7 @@
   <ul>
     {% for transaction in transaction_list %}
       <li>
-        <a href="{{ transaction.get_absolute_url }}">{{transaction.transaction_id}}: </a> {{ transaction.card }} {{ transaction.transaction_date }} {{ transaction.status }}
+        <a href="{{ transaction.get_absolute_url }}">{{transaction.transaction_id}}: </a> {{ transaction.account }} {{ transaction.transaction_date }}
       </li>
     {% endfor %}
   </ul>

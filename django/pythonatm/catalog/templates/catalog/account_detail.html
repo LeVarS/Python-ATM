@@ -1,11 +1,13 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Account: {{ account.account_number }} ({{ account.last_name }}, {{ account.first_name }})</h1>
+  <p><a href="{% url 'edit-account' account.pk %}">Click here</a> to edit this account.</p>
+  <h1>Account #: {{ account.account_number }}</h1>
 
   <!-- <p><strong>Author:</strong> <a href="">{{ book.author }}</a></p> <!-- author detail link not yet defined -->
   <p><strong>Account Number:</strong> {{ account.account_number }}</p>
   <p><strong>Name:</strong> {{ account.first_name }} {{ account.last_name }}</p>
+  <p><strong>Address:</strong> {{ account.address }}</p>
   <p><strong>Phone Number:</strong> {{ account.phone_number }}</p>
   <p><strong>Balance:</strong> {{ account.balance }}</p>
 

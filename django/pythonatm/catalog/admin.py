@@ -10,25 +10,25 @@ from catalog.models import Account, Card, ATMachine, Transaction, ATMachineRefil
 
 class AccountAdmin(admin.ModelAdmin):
     list_display = ('last_name', 'first_name', 'account_number', 'balance') # Inserting "('bank_user')" causes a TypeError
-    fields = ['first_name', 'last_name', 'phone_number', ('account_number', 'balance'), 'bank_user']
+    fields = ['first_name', 'last_name', 'address', 'phone_number', 'balance', 'bank_user']
 admin.site.register(Account, AccountAdmin)    # Same thing as "admin.site.register(Account)"
 
 class CardAdmin(admin.ModelAdmin):
-    list_display = ('card_number', 'account', 'issue_date', 'expiration_date', 'status')
-    list_filter = ('issue_date', 'expiration_date', 'status')
-    fields = ['first_name', 'last_name', 'phone_number', 'account', ('card_number', 'pin'), ('issue_date', 'expiration_date'), 'status', 'bank_user']
+    list_display = ('card_number', 'account', 'issue_date', 'expiration_date')
+    list_filter = ('issue_date', 'expiration_date')
+    fields = ['first_name', 'last_name', 'address', 'phone_number', 'account', 'pin', 'bank_user']
 admin.site.register(Card, CardAdmin)
 
 class ATMachineAdmin(admin.ModelAdmin):
     list_display = ('machine_id', 'current_balance', 'last_refill', 'next_maintenance')
     list_filter = ('last_refill', 'next_maintenance')
-    fields = ['machine_id', ('current_balance', 'minimum_balance'), ('last_refill', 'next_maintenance')]
+    fields = ['machine_id', 'address', ('current_balance', 'minimum_balance')]
 admin.site.register(ATMachine, ATMachineAdmin)
 
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = ('transaction_id', 'type', 'card', 'atm_machine', 'transaction_date', 'status')
-    list_filter = ('type', 'card', 'atm_machine', 'transaction_date', 'status')
-    fields = [('type', 'status'), ('atm_machine', 'card'), 'bank_user']
+    list_display = ('transaction_id', 'account', 'atm_machine', 'transaction_date', 'description')
+    list_filter = ('type', 'atm_machine', 'transaction_date')
+    fields = ['type', ('atm_machine', 'account'), 'bank_user']
 admin.site.register(Transaction, TransactionAdmin)
 
 class ATMachineRefillAdmin(admin.ModelAdmin):

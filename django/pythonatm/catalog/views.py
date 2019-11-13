@@ -3,7 +3,7 @@ from django.contrib.auth.models import Group
 from catalog.models import Account, Card, ATMachine, ATMachineRefill, Transaction
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from catalog.forms import CustomUserCreationForm, AccountCreationForm, PhoneChangeForm, CardCreationForm, WithdrawTransactionForm
+from catalog.forms import CustomUserCreationForm, AccountCreationForm, CardCreationForm, WithdrawTransactionForm, AccountChangeForm, CashTransferForm, DepositTransactionForm, CardChangeForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 
@@ -73,7 +73,7 @@ def AccountView(request):
     context = {
          'form' : form,
     }
-    return render(request, "account_creation.html", context=context)
+    return render(request, "catalog/account_creation.html", context=context)
 
 def CardView(request):
     if request.method == "POST":
@@ -95,16 +95,55 @@ def CardView(request):
     context = {
          'form' : form,
     }
-    return render(request, "card_creation.html", context=context)
+    return render(request, "catalog/card_creation.html", context=context)
+
+def CashTransferView(request):
+    #instance = Account.objects.get(account_number=pk)
+    if request.method == "POST":
+        form = CashTransferForm(request.user, request.POST)
+        if form.is_valid():
+            response_code = form.transfer_amount()
+            if form.redirect:
+                if response_code == 1:
+                    return redirect("insufficient-funds")
+                elif response_code == -1:
+                    return redirect("nonexistent-account")
+            else:
+            # form.withdraw_amount()
+            #transaction.description = str("Transferred", transaction.amount)
+            # transaction.bank_user = request.user
+            # transaction.save()
+                return redirect("transaction-history")
+        else:
+            if form.redirect:
+                return redirect("insufficient-funds")
+                # for error in form.errors.as_data():
+                #     if error.code == 'funds':
+                #         return redirect("insufficient-funds")
+                #     elif error.code == "account":
+                #         return redirect("nonexistent-account")
+
+            for msg in form.errors:
+                print(form.errors[msg])
+    form = CashTransferForm(request.user)
+    context = {
+         'form' : form,
+    }
+    return render(request, "catalog/transfer.html", context=context)
 
 def WithdrawTransactionView(request):
     if request.method == "POST":
         form = WithdrawTransactionForm(request.user, request.POST)
         if form.is_valid():
-            transaction = form.save()
-            transaction.bank_user = request.user
-            transaction.save()
-            return redirect("transaction-history")
+            response_code = form.withdraw_amount()
+            if form.redirect:
+                if response_code == 1:
+                    return redirect("insufficient-funds")
+                elif response_code == -1:
+                    return redirect("insufficient-atm-funds")
+            else:
+                return redirect("transaction-history")
+
         else:
             for msg in form.errors:
                 print(form.errors[msg])
@@ -112,19 +151,105 @@ def WithdrawTransactionView(request):
     context = {
          'form' : form,
     }
-    return render(request, "withdraw.html", context=context)
+    return render(request, "catalog/withdraw.html", context=context)
 
-def TransactionView(request):
-    form = PhoneChangeForm(request.POST)
-    if form.is_valid():
-        transaction = form.save(commit=False)
-        transaction.bank_user = request.user
-        transaction.save()
+def DepositTransactionView(request):
+    if request.method == "POST":
+        form = DepositTransactionForm(request.user, request.POST)
+        if form.is_valid():
+            form.deposit_amount()
+                # if form.redirect:
+                #     return redirect("insufficient-funds")
+                # else:
+            return redirect("transaction-history")
+        else:
+            for msg in form.errors:
+                print(form.errors[msg])
+    form = DepositTransactionForm(request.user)
+    context = {
+        'form' : form,
+    }
+    return render(request, "catalog/deposit.html", context=context)
+    #
+    # if request.method == "POST":
+    #     form = WithdrawTransactionForm(request.user, request.POST)
+    #     if form.is_valid():
+    #         transaction = form.save()
+    #         transaction.bank_user = request.user
+    #         transaction.save()
+    #         return redirect("transaction-history")
+    #     else:
+    #         for msg in form.errors:
+    #             print(form.errors[msg])
+    # form = WithdrawTransactionForm(request.user)
+    # context = {
+    #      'form' : form,
+    # }
+    # return render(request, "withdraw.html", context=context)
+
+def EditAccountView(request, pk):
+    instance = Account.objects.get(account_number=pk)
+    if request.method == "POST":
+        form = AccountChangeForm(request.POST, instance=instance)
+        if form.is_valid():
+            temp = form.save(commit=False)
+            instance.phone_number = temp.phone_number
+            instance.update()
+            return redirect('account-detail', pk)
+    form = AccountChangeForm(instance=instance)
     context = {
          'form' : form,
     }
-    return render(request, "phone_change.html", context=context)
+    return render(request, "catalog/edit_account.html", context=context)
 
+def EditCardView(request, pk):
+    instance = Card.objects.get(card_number=pk)
+    if request.method == "POST":
+        form = CardChangeForm(request.POST, instance=instance)
+        if form.is_valid():
+            temp = form.save(commit=False)
+            instance.pin = temp.pin
+            instance.update()
+            return redirect('card-detail', pk)
+    form = CardChangeForm(instance=instance)
+    context = {
+         'form' : form,
+    }
+    return render(request, "catalog/edit_card.html", context=context)
+
+# def TransactionView(request):
+#     form = PhoneChangeForm(request.POST)
+#     if form.is_valid():
+#         transaction = form.save(commit=False)
+#         transaction.bank_user = request.user
+#         transaction.save()
+#     context = {
+#          'form' : form,
+#     }
+#     return render(request, "phone_change.html", context=context)
+
+def InsufficientFundsView(request):
+    """ View function for home page of site. """
+
+    context = {
+        'message' : "Not enough funds in sending account!"
+    }
+
+    return render(request, 'post_error.html', context=context)
+
+def AccountErrorView(request):
+    context = {
+        'message' : "Receiving account does not exist!"
+    }
+
+    return render(request, 'post_error.html', context=context)
+
+def AtmErrorView(request):
+    context = {
+        'message' : "ATM Error - Insufficient funds"
+    }
+
+    return render(request, 'post_error.html', context=context)
 
 
 class AccountListView(generic.ListView):
@@ -141,7 +266,7 @@ class AccountByUserListView(LoginRequiredMixin, generic.ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return Account.objects.filter(bank_user=self.request.user).order_by('account_number')
+        return Account.objects.filter(bank_user=self.request.user).order_by('balance')
 
 class CardListView(generic.ListView):
     model = Card
@@ -157,7 +282,7 @@ class CardByUserListView(LoginRequiredMixin, generic.ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return Card.objects.filter(bank_user=self.request.user).order_by('card_number')
+        return Card.objects.filter(bank_user=self.request.user).order_by('account')
 
 class TransactionListView(generic.ListView):
     model = Transaction
@@ -173,4 +298,4 @@ class TransactionByUserListView(LoginRequiredMixin, generic.ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return Transaction.objects.filter(bank_user=self.request.user).order_by('transaction_id')
+        return Transaction.objects.filter(bank_user=self.request.user).order_by('transaction_date')

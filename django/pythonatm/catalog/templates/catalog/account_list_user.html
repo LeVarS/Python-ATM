@@ -9,7 +9,7 @@
 
       {% for account in account_list %}
       <li class="{% if account.balance < 0 %}text-danger{% endif %}">
-        <a href="{% url 'account-detail' account.pk %}">{{account.account_number}}: {{ account.first_name }} {{ account.last_name }}</a> (${{ account.balance }})
+        <a href="{% url 'account-detail' account.pk %}">Account #: {{account.account_number}}</a>  - {{ account.first_name }} {{ account.last_name }} - Current Balance is ${{ account.balance }}
       </li>
       {% endfor %}
     </ul>

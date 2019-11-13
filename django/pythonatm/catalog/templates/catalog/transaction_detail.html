@@ -1,15 +1,13 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Transaction {{ transaction.transaction_id }} ({{ transaction.card.last_name }}, {{ transaction.card.first_name }})</h1>
+  <h1>Transaction ID: {{ transaction.transaction_id }} </h1>
 
   <!-- <p><strong>Author:</strong> <a href="">{{ book.author }}</a></p> <!-- author detail link not yet defined -->
+  <p>{{ transaction.description }}</p>
   <p><strong>Transaction Number:</strong> {{ transaction.transaction_id }}</p>
   <p><strong>Transaction Date:</strong> {{ transaction.transaction_date }}</p>
-  <p><strong>Transaction Type:</strong> {{ transaction.type }}</p>
-  <p><strong>Transaction Location:</strong> {{ transaction.atm_machine }}</p>
-  <p><strong>Account Number:</strong> <a href="{% url 'account-detail' transaction.card.account.pk %}">{{ transaction.card.account.account_number }}</a></p>
-  <p><strong>Card Number:</strong> <a href="{% url 'card-detail' transaction.card.pk %}">{{ transaction.card.card_number }}</a></p>
+  <p><strong>Account Number:</strong> {{ transaction.account.account_number }}</p>
 
   <!-- <div style="margin-left:20px;margin-top:20px">
     <h4>Copies</h4>

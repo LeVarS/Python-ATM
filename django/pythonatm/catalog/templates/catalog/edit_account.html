@@ -1,0 +1,13 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <form method="post">
+    {% csrf_token %} <!-- cross site request forgery token -->
+    {{ form.as_p }}
+
+    <br><br>
+    <input class="btn light-blue darken-1 white-text" type="submit" value="submit" />
+
+  </form>
+  Already have accounts with us? <a href="{% url 'my-accounts' %}"> View them here. </a>
+{% endblock %}

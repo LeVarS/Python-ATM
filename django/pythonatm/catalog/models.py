@@ -43,24 +43,33 @@ class Account(models.Model):
         #verbose_name='First',
         validators=[MinLengthValidator(1)],
         max_length=30,
-        help_text='Enter first name for Account')
+        help_text='Enter first name of account holder')
 
     last_name = models.CharField(
         #verbose_name='Last',
         validators=[MinLengthValidator(1)],
         max_length=30,
-        help_text='Enter last name for Account')
+        help_text='Enter last name of account holder')
+
+    address = models.CharField(
+        validators=[MinLengthValidator(1)],
+        max_length=100,
+        null=True,
+        blank=True,
+        help_text='Enter address of account holder')
+
 
     # Phone Number for Account
     phone_number = models.CharField(
         #verbose_name='Phone',
         validators=[MinLengthValidator(10)],
         max_length=10,
-        help_text='Enter phone number for Account')
+        help_text='Enter phone number of account holder')
 
     # Balance for Account
     balance = models.IntegerField(
-        #verbose_name='Balance',
+        #verbose_name='Balance',,
+        default=0,
         help_text='Initial balance for Account')
 
     """ Links account to a specific user """
@@ -75,11 +84,12 @@ class Account(models.Model):
         return f'Account: {self.account_number}, {self.first_name} {self.last_name}'
 
     def save(self, *args, **kwargs):
-
         self.account_number = get_random_id(12, "0123456789", "ACC")
         super(Account, self).save(*args, **kwargs)
         #number.save()
 
+    def update(self, *args, **kwargs):
+        super(Account, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         """Returns the url to access a detail record for this Account."""
@@ -120,18 +130,26 @@ class Card(models.Model):
     first_name = models.CharField(
         #verbose_name='First',
         max_length=30,
-        help_text='Enter first name for Card')
+        help_text='Enter first name of card holder')
 
     last_name = models.CharField(
         #verbose_name='Last',
         max_length=30,
-        help_text='Enter last name for Card')
+        help_text='Enter last name of card holder')
+
+    address = models.CharField(
+        validators=[MinLengthValidator(1)],
+        max_length=100,
+        null=True,
+        blank=True,
+        help_text='Enter address of card holder')
+
 
     phone_number = models.CharField(
         #verbose_name='Phone',
         validators=[MinLengthValidator(10)],
         max_length=10,
-        help_text='Enter phone number for Account')
+        help_text='Enter phone number for card holder')
 
     issue_date = models.DateField(
         null=True,
@@ -141,20 +159,20 @@ class Card(models.Model):
     expiration_date = models.DateField(
         null=True,
         blank=True,
-        default=(datetime.date.today() + datetime.timedelta(days=1460)))
+        default=(datetime.date.today() + datetime.timedelta(days=730)))
 
-    CARD_STATUS = (
-        ('A', 'Activated'),
-        ('D', 'Deactivtaed')
-    )
-
-    status = models.CharField(
-        max_length=1,
-        choices=CARD_STATUS,
-        blank=True,
-        default='A',
-        help_text='Card Status'
-    )
+    # CARD_STATUS = (
+    #     ('A', 'Activated'),
+    #     ('D', 'Deactivtaed')
+    # )
+    #
+    # status = models.CharField(
+    #     max_length=1,
+    #     choices=CARD_STATUS,
+    #     blank=True,
+    #     default='A',
+    #     help_text='Card Status'
+    # )
 
     def __str__(self):
         """String for representing the Model object."""
@@ -162,6 +180,9 @@ class Card(models.Model):
 
     def save(self, *args, **kwargs):
         self.card_number=get_random_id(16, "0123456789", "C")
+        super(Card, self).save(*args, **kwargs)
+
+    def update(self, *args, **kwargs):
         super(Card, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -175,9 +196,18 @@ class ATMachine(models.Model):
     """ Primary Key """
     machine_id = models.CharField(
         primary_key=True,
-        validators=[MinLengthValidator(16)],
-        max_length=16,
+        validators=[MinLengthValidator(8)],
+        max_length=8,
+        verbose_name='ATM',
         help_text="Identification Number for ATM")
+
+    address = models.CharField(
+        validators=[MinLengthValidator(1)],
+        max_length=100,
+        null=True,
+        blank=True,
+        help_text='Enter address of ATM')
+
 
     current_balance = models.IntegerField(
         help_text='Current Balance of ATM')
@@ -187,14 +217,16 @@ class ATMachine(models.Model):
 
     last_refill = models.DateField(
         null=True,
+        default=timezone.now,
         blank=True)
 
     next_maintenance = models.DateField(
         null=True,
+        default=timezone.now,
         blank=True)
 
     def __str__(self):
-        return f'ATM: {self.machine_id}'
+        return f'ATM at {self.address}'
 
     # def save(self, *args, **kwargs):
     #     slug_save(self, 16, '0123456789')
@@ -252,39 +284,43 @@ class Transaction(models.Model):
         max_length=10,
         help_text='Identification Number for Transaction')
 
-    TRANSACTION_STATUS = (
-        ('P', 'Pending'),
-        ('A', 'Approved')
-    )
+    # TRANSACTION_STATUS = (
+    #     ('P', 'Pending'),
+    #     ('A', 'Approved')
+    # )
 
-    status = models.CharField(
-        max_length=1,
-        choices=TRANSACTION_STATUS,
-        blank=True,
-        default='A',
-        help_text='Transaction Status')
+    # status = models.CharField(
+    #     max_length=1,
+    #     choices=TRANSACTION_STATUS,
+    #     blank=True,
+    #     default='A',
+    #     help_text='Transaction Status')
 
     TRANSACTION_TYPE = (
-        ('PHC', 'Phone Change'),
-        ('PIC', 'PIN Change'),
-        ('CHW', 'Cash Withdrawal'),
-        ('CHT', 'Cash Transfer'),
-        ('BLE', 'Balance Enquiry')
+        ('W', 'Withdrawal'),
+        ('D', 'Deposit'),
     )
 
     type = models.CharField(
         max_length=3,
         choices=TRANSACTION_TYPE,
         blank=True,
-        default='CHW',
+        default='W',
         help_text='Tranaction Type')
 
-    card = models.ForeignKey(
-        Card,
+    # card = models.ForeignKey(
+    #     Card,
+    #     on_delete=models.SET_NULL,
+    #     null=True,
+    #     blank=True,
+    #     help_text='Account used in transaction')
+
+    account = models.ForeignKey(
+        Account,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        help_text='Card used in transaction')
+        help_text='Account used in transaction')
 
     atm_machine = models.ForeignKey(
         ATMachine,
@@ -295,10 +331,10 @@ class Transaction(models.Model):
     transaction_date = models.DateField(
         default=timezone.now)
 
-    response_code = models.CharField(
-        max_length=1,
-        default='0',
-        help_text='Response Code for Tranaction')
+    # response_code = models.CharField(
+    #     max_length=1,
+    #     default='0',
+    #     help_text='Response Code for Tranaction')
 
     """ Links account to a specific user """
     bank_user = models.ForeignKey(
@@ -307,25 +343,33 @@ class Transaction(models.Model):
         null=True,
         blank=True)
 
+    description = models.CharField(
+        max_length=300,
+        default='Transaction')
+
     def __str__(self):
-        return f'{self.type} Transaction: {self.transaction_id}, {self.atm_machine}, {self.card}'
+        return f'{self.type} Transaction: {self.transaction_id}, {self.atm_machine}, {self.account}'
 
     def save(self, *args, **kwargs):
         self.transaction_id = get_random_id(10, "0123456789", "T")
+        super(Transaction, self).save(*args, **kwargs)
+
+    def update(self, *args, **kwargs):
+        #self.transaction_id = get_random_id(10, "0123456789", "T")
         super(Transaction, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         """Returns the url to access a detail record for this Account."""
         return reverse('card-detail', args=[str(self.card_number)])
 
-def slug_save(obj, length, char_set):
-    if not obj.slug:
-        obj.slug = get_random_string(length, char_set)
-        slug_is_worng = True
-        while slug_is_wrong:
-            slug_is_wrong = False
-            other_objs_with_slug = type(obj).objects.filter(slug=obj.slug)
-            if len(other_objs_with_slug) > 0:
-                slug_is_wrong = True
-            if slug_is_wrong:
-                obj.slug = get_random_string(length, char_set)
+# def slug_save(obj, length, char_set):
+#     if not obj.slug:
+#         obj.slug = get_random_string(length, char_set)
+#         slug_is_worng = True
+#         while slug_is_wrong:
+#             slug_is_wrong = False
+#             other_objs_with_slug = type(obj).objects.filter(slug=obj.slug)
+#             if len(other_objs_with_slug) > 0:
+#                 slug_is_wrong = True
+#             if slug_is_wrong:
+#                 obj.slug = get_random_string(length, char_set)

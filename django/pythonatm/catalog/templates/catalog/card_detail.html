@@ -1,14 +1,16 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Card: {{ card.card_number }} ({{ card.last_name }}, {{ card.first_name }})</h1>
+  <p><a href="{% url 'edit-card' card.pk %}">Click here</a> to edit this card.</p>
+  <h1>Card #: {{ card.card_number }}</h1>
 
   <!-- <p><strong>Author:</strong> <a href="">{{ book.author }}</a></p> <!-- author detail link not yet defined -->
   <p><strong>Card Number:</strong> {{ card.card_number }}</p>
+  <p><strong>PIN:</strong> {{ card.pin }}</p>
   <p><strong>Name:</strong> {{ card.first_name }} {{ card.last_name }}</p>
+  <p><strong>Address:</strong> {{ card.address }}</p>
   <p><strong>Phone Number:</strong> {{ card.phone_number }}</p>
-  <p><strong>Account:</strong> {{ card.account.account_number }} </p>
-  <p><strong>Balance:</strong> {{ card.account.balance }}</p>
+  <p><a href="{% url 'account-detail' card.account.pk %}"><strong>Account Info:</strong></a> {{ card.account.account_number }} - {{ card.account.first_name }} {{ card.account.last_name }}</p>
 
   <!-- <div style="margin-left:20px;margin-top:20px">
     <h4>Copies</h4>
