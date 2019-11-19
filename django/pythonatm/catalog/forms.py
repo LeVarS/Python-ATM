@@ -84,13 +84,22 @@ class CashTransferForm(forms.Form):
             # raise ValidationError([
             #     ValidationError(_('Invalid amount - Receiver account doesn\'t exist'), code='account'),
             # ])
+        elif instance == account:
+            self.redirect = True
+            return 2
         else:
-            transaction = Transaction()
-            transaction.bank_user = account.bank_user
-            transaction.account = self.cleaned_data['account']
-            transaction.type = 'T'
-            transaction.description = f"Transfered ${amount} from {account.first_name} {account.last_name}'s account (Account #: {account.account_number}) to {instance.first_name} {instance.last_name}'s account (Account #: {account.account_number})."
-            transaction.save()
+            transaction_s = Transaction()
+            transaction_r = Transaction()
+            transaction_s.bank_user = account.bank_user
+            transaction_s.account = self.cleaned_data['account']
+            transaction_s.type = 'T'
+            transaction_s.description = f"Transfered ${amount} from {account.first_name} {account.last_name}'s account (Account #: {account.account_number}) to {instance.first_name} {instance.last_name}'s account (Account #: {account.account_number})."
+            transaction_s.save()
+            transaction_r.bank_user = Account.objects.get(account_number=self.cleaned_data['receiver']).bank_user
+            transaction_r.account = Account.objects.get(account_number=self.cleaned_data['receiver'])
+            transaction_r.type = 'T'
+            transaction_r.description = f"Received ${amount} from {account.first_name} {account.last_name}'s account."
+            transaction_r.save()
             instance.balance += amount
             account.balance -= amount
             instance.update()

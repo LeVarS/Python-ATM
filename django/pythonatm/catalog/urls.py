@@ -71,6 +71,10 @@ urlpatterns += [
     path('atmcaperror/', views.AtmCapacityErrorView, name='insufficient-atm-capacity'),
 ]
 
+urlpatterns += [
+    path('ownaccounterror/', views.TransferOwnAccountErrorView, name='transfer-own-account'),
+]
+
 
 # urlpatterns += [
 #     path('register_account/', views.RegisterAccount, name='register_account'),

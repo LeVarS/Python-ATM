@@ -108,6 +108,8 @@ def CashTransferView(request):
                     return redirect("insufficient-funds")
                 elif response_code == -1:
                     return redirect("nonexistent-account")
+                elif response_code == 2:
+                    return redirect("transfer-own-account")
             else:
             # form.withdraw_amount()
             #transaction.description = str("Transferred", transaction.amount)
@@ -248,6 +250,12 @@ def AtmCapacityErrorView(request):
 
     return render(request, 'post_error.html', context=context)
 
+def TransferOwnAccountErrorView(request):
+    context = {
+        'message' : "Unable to transfer to own account"
+    }
+
+    return render(request, 'post_error.html', context=context)
 
 class AccountListView(generic.ListView):
     model = Account
